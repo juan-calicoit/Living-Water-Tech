@@ -907,5 +907,122 @@
             document.querySelector('.nav-container').appendChild(mobileMenuButton);
             
             mobileMenuButton.addEventListener('click', function() {
+                const navLinks = document.querySelector('.nav-links');
+                navLinks.classList.toggle('mobile-active');
+                this.innerHTML = navLinks.classList.contains('mobile-active') ? '✕' : '☰';
+            });
+            
+            // Add mobile menu styles
+            const styleElement = document.createElement('style');
+            styleElement.textContent = `
+                .mobile-menu-toggle {
+                    display: none;
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: #0078d7;
+                }
+                
+                @media (max-width: 992px) {
+                    .mobile-menu-toggle {
+                        display: block;
+                    }
+                    
+                    .nav-links {
+                        position: fixed;
+                        top: 0;
+                        right: -300px;
+                        width: 300px;
+                        height: 100vh;
+                        background-color: white;
+                        flex-direction: column;
+                        padding: 2rem;
+                        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                        transition: right 0.3s ease;
+                        z-index: 1000;
+                    }
+                    
+                    .nav-links.mobile-active {
+                        right: 0;
+                    }
+                    
+                    .nav-links li {
+                        margin: 0 0 1rem 0;
+                    }
+                    
+                    .dropdown-menu {
+                        position: static;
+                        box-shadow: none;
+                        opacity: 1;
+                        visibility: visible;
+                        transform: none;
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.3s ease;
+                    }
+                    
+                    .has-dropdown {
+                        cursor: pointer;
+                    }
+                    
+                    .has-dropdown.active + .dropdown-menu {
+                        max-height: 300px;
+                        padding: 0.5rem 0 0.5rem 1rem;
+                    }
+                }
+            `;
+            document.head.appendChild(styleElement);
+            
+            // Handle mobile dropdowns
+            document.querySelectorAll('.has-dropdown').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 992) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                    }
+                });
+            });
+            
+            // Count-up animation for stats
+            const stats = document.querySelectorAll('.stat-number');
+            let animated = false;
+            
+            function animateStats() {
+                if (animated) return;
+                
+                const statsSection = document.querySelector('.support-stats');
+                if (!statsSection) return;
+                
+                const statsSectionTop = statsSection.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (statsSectionTop < windowHeight - 100) {
+                    stats.forEach(stat => {
+                        const target = parseInt(stat.textContent.replace(/[^0-9]/g, ''), 10);
+                        let count = 0;
+                        const duration = 2000; // ms
+                        const interval = Math.min(50, duration / target);
+                        const increment = target / (duration / interval);
+                        
+                        const counter = setInterval(() => {
+                            count += increment;
+                            if (count >= target) {
+                                stat.textContent = stat.textContent.includes('%') ? target + '%' : target;
+                                clearInterval(counter);
+                            } else {
+                                stat.textContent = stat.textContent.includes('%') ? Math.floor(count) + '%' : Math.floor(count);
+                            }
+                        }, interval);
+                    });
+                    
+                    animated = true;
+                    window.removeEventListener('scroll', animateStats);
+                }
+            }
+            
+            window.addEventListener('scroll', animateStats);
+            animateStats();
+        });
 </body>
 </html>

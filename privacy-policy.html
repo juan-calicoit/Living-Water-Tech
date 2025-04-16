@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Living Water Tech - Privacy Policy</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #0078d7;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0078d7, #00a8e8, #0056b3);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            pointer-events: none;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #0078d7;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #0078d7;
+            text-decoration: none;
+        }
+        
+        /* Main Content */
+        .main-content {
+            background-color: white;
+            padding: 3rem 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .policy-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .policy-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .policy-header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .policy-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .policy-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .policy-section h2 {
+            font-size: 1.8rem;
+            color: #0078d7;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .policy-section h3 {
+            font-size: 1.4rem;
+            color: #333;
+            margin: 1.5rem 0 0.75rem;
+        }
+        
+        .policy-section p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        .policy-section ul {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        .policy-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .last-updated {
+            font-style: italic;
+            color: #777;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #292929;
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #f0f0f0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: #b0b0b0;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+        
+        /* Table of Contents */
+        .toc {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            margin-top: 0 !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .toc a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #0078d7;
+            text-decoration: none;
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">Living Water Tech</div>
+            <p class="tagline">Faith Through Innovation - Where Gospel Meets Digital</p>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Living Water Tech</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Ministry Tech</a></li>
+                <li><a href="#">Production</a></li>
+                <li><a href="#">Showcase</a></li>
+                <li><a href="#">Store</a></li>
+                <li><a href="#">Donate</a></li>
+                <li><a href="#">Community</a></li>
+                <li><a href="privacy-policy.html">Privacy</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container policy-container">
+            <div class="policy-header">
+                <h1>Privacy Policy</h1>
+                <p>Your privacy is important to us. This policy outlines how we collect, use, and protect your data.</p>
+            </div>
+            
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="#overview">1. Overview</a></li>
+                    <li><a href="#information-collection">2. Information We Collect</a></li>
+                    <li><a href="#information-use">3. How We Use Your Information</a></li>
+                    <li><a href="#information-sharing">4. Information Sharing and Disclosure</a></li>
+                    <li><a href="#third-party-services">5. Third-Party Services</a></li>
+                    <li><a href="#meta-whatsapp">6. Meta and WhatsApp Integration</a></li>
+                    <li><a href="#data-security">7. Data Security</a></li>
+                    <li><a href="#cookies">8. Cookies and Similar Technologies</a></li>
+                    <li><a href="#children-privacy">9. Children's Privacy</a></li>
+                    <li><a href="#user-rights">10. Your Rights and Choices</a></li>
+                    <li><a href="#policy-changes">11. Changes to This Privacy Policy</a></li>
+                    <li><a href="#contact-us">12. Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div id="overview" class="policy-section">
+                <h2>1. Overview</h2>
+                <p>Welcome to Living Water ("we," "our," or "us"). We are committed to protecting your privacy and providing a safe online experience for our community members.</p>
+                <p>This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our mobile applications, or interact with our services, including those integrated with Meta platforms and WhatsApp.</p>
+                <p>By accessing or using our services, you consent to the practices described in this Privacy Policy. If you do not agree with the policies outlined here, please do not access or use our services.</p>
+                <a href="#" class="back-to-top">Back to Top</a>
+            </div>
+            
+            <div id="information-collection" class="policy-section">
+                <h2>2. Information We Collect</h2>
+                <p>We may collect information about you in various ways:</p>
+                
+                <h3>Personal Information</h3>
+                <p>This includes information you provide directly to us:</p>
+                <ul>
+                    <li>Contact information (name, email address, phone number)</li>
+                    <li>Account information (username, password)</li>
+                    <li>Profile information (interests, preferences)</li>
+                    <li>Communication content (messages, comments, feedback)</li>
+                    <li>Payment information (for donations or purchases)</li>
+                </ul>
+                
+                <h3>Usage Information</h3>
+                <p>Information about how you interact with our services:</p>
+                <ul>
+                    <li>Log data (IP address, browser type, pages visited)</li>
+                    <li>Device information (device type, operating system)</li>
+                    <li>Usage patterns (features used, time spent)</li>
+                    <li>Content interactions (likes, shares, comments)</li>
+                </ul>
+                
+                <h3>Information from Third Parties</h3>
+                <p>We may receive information about you from third-party services, such as:</p>
+                <ul>
+                    <li>Authentication services (if you log in using third-party accounts)</li>
+                    <li>Meta platforms and WhatsApp (when you use integrated features)</li>
+                    <li>Analytics providers and advertising partners</li>
+                </ul>
+                <a href="#" class="back-to-top">Back to Top</a>
+            </div>
+            
+            <div id="information-use" class="policy-section">
+                <h2>3. How We Use Your Information</h2>
+                <p>We use the information we collect for various purposes, including:</p>
+                <ul>
+                    <li>Providing, maintaining, and improving our services</li>
+                    <li>Creating and managing your account</li>
+                    <li>Processing transactions and sending related information</li>
+                    <li>Responding to your comments, questions, and requests</li>
+                    <li>Sending administrative messages, updates, and security alerts</li>
+                    <li>Personalizing your experience and delivering relevant content</li>
+                    <li>Analyzing usage patterns to enhance our services</li>
+                    <li>Protecting against, identifying, and preventing fraud and other harmful activities</li>
+                    <li>Complying with legal obligations</li>
+                    <li>Connecting you with other community members with similar interests</li>
+                </ul>
+                <a href="#" class="back-to-top">Back to Top</a>
+            </div>
+            
+            <div id="information-sharing" class="policy-section">
+                <h2>4. Information Sharing and Disclosure</h2>
+                <p>We may share your information in the following circumstances:</p>
+                <ul>
+                    <li><strong>With Your Consent:</strong> We may share information when you direct us to do so.</li>
+                    <li><strong>Service Providers:</strong> We work with third-party service providers who help us operate, improve, and secure our services.</li>
+                    <li><strong>Legal Requirements:</strong> We may disclose information in response to legal process, to protect our rights, or when required by law.</li>
+                    <li><strong>Business Transfers:</strong> If we are involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.</li>
+                    <li><strong>Protection and Safety:</strong> We may share information to protect the safety and security of our users, our services, or the public.</li>
+                </ul>
+                <p>We do not sell your personal information to third parties for marketing purposes.</p>
+                <a href="#" class="back-to-top">Back to Top</a>
+            </div>
+            
+            <div id="third-party-services" class="policy-section">
+                <h2>5. Third-Party Services</h2>
+                <p>Our services may contain links to other websites, applications, or services operated by third parties. This Privacy Policy applies only to our services. We encourage you to review the privacy policies of any third-party services you access.</p>
+                <p>We may use third-party services for various functions, such as:</p>
+                <ul>
+                    <li>Analytics (to understand how users interact with our services)</li>
+                    <li>Payment processing (to handle donations or purchases)</li>
+                    <li>Content delivery networks (to deliver content efficiently)</li>
+                    <li>Social media integrations (to connect with platforms like Meta)</li>
+                </ul>
+                <p>These third-party services may collect information about you when you interact with them, subject to their own privacy policies.</p>
+                <a href="#" class="back-to-top">Back to Top</a>
+            </div>
+            
+            <div id="meta-whatsapp" class="policy-section">
+                <h2>6. Meta and WhatsApp Integration</h2>
+                <p>Our services integrate with Meta platforms (including Facebook) and WhatsApp to enhance your experience and facilitate community engagement. When you use these integrations:</p>
+                <ul>
+                    <li>We may receive information from Meta or WhatsApp in accordance with their privacy policies and your privacy settings on those platforms.</li>
+                    <li>Information you share through our services may be shared with Meta or WhatsApp as necessary for the integration to function.</li>
+                    <li>We may use Meta's Business Tools and WhatsApp's Business API to communicate with you and provide our services.</li>
+                    <li>Your use of Meta and WhatsApp features is subject to their respective terms and privacy policies.</li>
+                </ul>
+                <p>For more information about how Meta and WhatsApp handle your information, please review their privacy policies.</p>
+                <a href="#" class="back-to-top">Back to Top</a>
+            </div>
