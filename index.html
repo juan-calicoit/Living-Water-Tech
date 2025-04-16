@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Living Water Tech - Faith Through Innovation</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #0078d7;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0078d7, #00a8e8, #0056b3);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            pointer-events: none;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #0078d7;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        .nav-links a {
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: block;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links a:hover {
+            color: #0078d7;
+            text-decoration: none;
+        }
+        
+        .has-dropdown::after {
+            content: '▼';
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+            list-style: none;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu li {
+            margin: 0;
+        }
+        
+        .dropdown-menu a {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background-color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #0078d7;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: #555;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            background-color: #0078d7;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+        
+        .btn:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .hero-buttons {
+            margin-top: 2rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background-color: #f8f9fa;
+        }
+        
+        .section-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-heading h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .section-heading p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #0078d7;
+            position: relative;
+        }
+        
+        .feature-card p {
+            color: #555;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #0078d7, #00a8e8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        /* Community Section */
+        .community {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .community-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .community-text {
+            flex: 1;
+        }
+        
+        .community-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .community-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .community-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .community-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Showcase Section */
+        .showcase {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .showcase-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .showcase-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .showcase-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .showcase-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .showcase-item:hover .showcase-image img {
+            transform: scale(1.05);
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 120, 215, 0.8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s, background-color 0.3s;
+        }
+        
+        .showcase-item:hover .play-button {
+            opacity: 1;
+        }
+        
+        .showcase-item h3 {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 1.25rem;
+            color: #0078d7;
+        }
+        
+        .showcase-item p {
+            padding: 0 1.5rem 1.5rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        
+        .showcase-cta {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        /* Support Section */
+        .support {
+            padding: 4rem 0;
+            background-color: #f8f9fa;
+        }
+        
+        .support-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .support-image {
+            flex: 1;
+        }
+        
+        .support-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .support-text {
+            flex: 1;
+        }
+        
+        .support-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .support-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .support-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0078d7;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #555;
+            font-size: 0.9rem;
+        }
+        
+        /* Merchandise Preview */
+        .merch-preview {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .merch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .merch-item {
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .merch-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .merch-item img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .merch-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .merch-item p {
+            color: #0078d7;
+            font-weight: 600;
+        }
+        
+        .merch-cta {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        /* Call to Action */
+        .cta {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0078d7, #00a8e8, #0056b3);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn-light {
+            background-color: white;
+            color: #0078d7;
+        }
+        
+        .btn-light:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #292929;
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #f0f0f0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: #b0b0b0;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .community-content {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-heading h2, .community-text h2, .cta h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">Living Water Tech</div>
+            <p class="tagline">Faith Through Innovation - Where Gospel Meets Digital</p>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">Living Water Tech</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#" class="has-dropdown">Ministry Tech</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">AI Integration</a></li>
+                        <li><a href="#">Automation</a></li>
+                        <li><a href="#">Digital Platforms</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="has-dropdown">Production</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Video Services</a></li>
+                        <li><a href="#">Live Streaming</a></li>
+                        <li><a href="#">Audio Solutions</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Showcase</a></li>
+                <li><a href="#">Store</a></li>
+                <li><a href="#">Donate</a></li>
+                <li><a href="#">Community</a></li>
+                <li><a href="privacy-policy.html">Privacy</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Where Faith Meets Innovation</h1>
+            <p>Living Water Tech is a Christ-centered community bringing together believers who want to share Jesus through modern technology, media production, and digital connection. We empower churches and ministries with the tools they need to spread the Gospel effectively in today's digital landscape.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn">Join Our Community</a>
+                <a href="#" class="btn btn-outline">Support Our Mission</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Our Approach</h2>
+                <p>Leveraging technology to create meaningful connections and spread the gospel in the digital age.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Modern Tech Ministry</h3>
+                    <p>Using artificial intelligence, automation, and digital tools to reach more people with the message of Christ in personalized and meaningful ways.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎬</div>
+                    <h3>Church Production</h3>
+                    <p>Empowering ministries with professional video, audio, and streaming solutions to create engaging content for their congregation and beyond.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Content Distribution</h3>
+                    <p>Leveraging platforms like YouTube and Restream to showcase different churches and pastors, amplifying their reach across digital channels.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Digital Community</h3>
+                    <p>Creating spaces for believers to connect through WhatsApp, Meta platforms, and custom solutions built for meaningful engagement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Showcase Section -->
+    <section class="showcase">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Church Production Showcase</h2>
+                <p>Featuring impactful ministries and innovative church productions from around the world</p>
+            </div>
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="/api/placeholder/400/250" alt="Church Production Example">
+                        <div class="play-button">▶</div>
+                    </div>
+                    <h3>Modern Worship Experience</h3>
+                    <p>Contemporary charismatic worship service featuring immersive production elements</p>
+                </div>
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="/api/placeholder/400/250" alt="Pastor Teaching">
+                        <div class="play-button">▶</div>
+                    </div>
+                    <h3>Engaging Bible Teaching</h3>
+                    <p>Dynamic preaching enhanced with visual elements and audience engagement</p>
+                </div>
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="/api/placeholder/400/250" alt="Online Ministry">
+                        <div class="play-button">▶</div>
+                    </div>
+                    <h3>Digital Outreach</h3>
+                    <p>Innovative approaches to online community building and digital discipleship</p>
+                </div>
+            </div>
+            <div class="showcase-cta">
+                <a href="#" class="btn">View More Examples</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community">
+        <div class="container">
+            <div class="community-content">
+                <div class="community-text">
+                    <h2>Join Our Growing Community</h2>
+                    <p>Connect with like-minded believers who are passionate about using technology to share Jesus. Our community offers support, resources, and collaboration opportunities.</p>
+                    <p>Whether you're a tech enthusiast, media producer, worship leader, or simply interested in how technology can enhance ministry, there's a place for you here.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+                <div class="community-image">
+                    <img src="/api/placeholder/600/400" alt="Living Water Tech Community">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Support Section -->
+    <section class="support">
+        <div class="container">
+            <div class="support-content">
+                <div class="support-image">
+                    <img src="/api/placeholder/600/400" alt="Church Technology Support">
+                </div>
+                <div class="support-text">
+                    <h2>Support Churches in Need</h2>
+                    <p>Many churches lack the resources to effectively leverage technology for their ministry. Your donation can help provide equipment, training, and support to these communities.</p>
+                    <div class="support-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Goes to Churches</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24+</span>
+                            <span class="stat-label">Churches Helped</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">$0</span>
+                            <span class="stat-label">Administrative Fees</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Merchandise Preview -->
+    <section class="merch-preview">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Faith-Based Merchandise</h2>
+                <p>Spread the message with our collection of Christ-centered apparel and tech accessories</p>
+            </div>
+            <div class="merch-grid">
+                <div class="merch-item">
+                    <img src="/api/placeholder/250/250" alt="Christian T-Shirt">
+                    <h3>Living Water Tee</h3>
+                    <p>$24.99</p>
+                </div>
+                <div class="merch-item">
+                    <img src="/api/placeholder/250/250" alt="Tech Accessory">
+                    <h3>Scripture Phone Case</h3>
+                    <p>$19.99</p>
+                </div>
+                <div class="merch-item">
+                    <img src="/api/placeholder/250/250" alt="Water Bottle">
+                    <h3>Living Water Bottle</h3>
+                    <p>$29.99</p>
+                </div>
+                <div class="merch-item">
+                    <img src="/api/placeholder/250/250" alt="Digital Ministry Guide">
+                    <h3>Digital Ministry Guide</h3>
+                    <p>$14.99</p>
+                </div>
+            </div>
+            <div class="merch-cta">
+                <a href="#" class="btn">View All Products</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Make an Impact?</h2>
+            <p>Join us in using technology to share the love of Christ with the world. Sign up today to access our resources, connect with our community, and start making a difference.</p>
+            <a href="#" class="btn btn-light">Get Started</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Living Water</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Join Now</a></li>
+                        <li><a href="#">Member Resources</a></li>
+                        <li><a href="#">Events</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Podcasts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Living Water Tech. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Living Water Tech website loaded successfully!');
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Reveal animations on scroll
+            const revealElements = document.querySelectorAll('.feature-card, .showcase-item, .merch-item');
+            
+            function checkScroll() {
+                revealElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 50) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            // Initial styles for animation
+            revealElements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            // Check on scroll and initial load
+            window.addEventListener('scroll', checkScroll);
+            checkScroll();
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.createElement('button');
+            mobileMenuButton.className = 'mobile-menu-toggle';
+            mobileMenuButton.innerHTML = '☰';
+            document.querySelector('.nav-container').appendChild(mobileMenuButton);
+            
+            mobileMenuButton.addEventListener('click', function() {
+</body>
+</html>
