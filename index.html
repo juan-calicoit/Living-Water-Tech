@@ -3,161 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Living Water Tech - Faith and Innovation</title>
+    <title>Living Water Tech - Bible Q&A</title>
     <style>
         /* Reset and Base Styles */
-        .bible-qa {
-        padding: 4rem 0;
-        background-color: #f9f9f9;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .bible-qa::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(0, 59, 122, 0.05) 0%, rgba(0, 59, 122, 0) 70%);
-        z-index: 0;
-    }
-    
-    .bible-qa-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin-top: 2rem;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .bible-qa-form {
-        background-color: white;
-        border-radius: 8px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-    
-    .bible-qa-form label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: #444;
-    }
-    
-    .bible-qa-form textarea {
-        width: 100%;
-        min-height: 150px;
-        padding: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        resize: vertical;
-        font-family: inherit;
-        font-size: 1rem;
-        transition: border-color 0.3s;
-    }
-    
-    .bible-qa-form textarea:focus {
-        border-color: var(--water-blue);
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(0, 59, 122, 0.1);
-    }
-    
-    .bible-qa-results {
-        background-color: white;
-        border-radius: 8px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        min-height: 300px;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .initial-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        color: #999;
-        text-align: center;
-    }
-    
-    .scripture-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.5;
-    }
-    
-    .bible-answer {
-        flex: 1;
-    }
-    
-    .bible-answer h3 {
-        color: var(--water-blue);
-        margin-bottom: 1rem;
-        font-size: 1.3rem;
-    }
-    
-    .bible-verse {
-        background-color: #f5f7fa;
-        border-left: 3px solid var(--water-blue);
-        padding: 1rem;
-        margin: 1rem 0;
-        font-style: italic;
-    }
-    
-    .verse-reference {
-        font-weight: 600;
-        display: block;
-        margin-top: 0.5rem;
-        text-align: right;
-    }
-    
-    /* Loading animation */
-    .loading-dots {
-        display: inline-flex;
-    }
-    
-    .dot {
-        width: 8px;
-        height: 8px;
-        margin: 0 4px;
-        border-radius: 50%;
-        background-color: white;
-        animation: dot-pulse 1.5s infinite ease-in-out;
-    }
-    
-    .dot:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-    
-    .dot:nth-child(3) {
-        animation-delay: 0.4s;
-    }
-    
-    @keyframes dot-pulse {
-        0%, 100% {
-            transform: scale(0.8);
-            opacity: 0.6;
-        }
-        50% {
-            transform: scale(1.2);
-            opacity: 1;
-        }
-    }
-    
-    @media (max-width: 992px) {
-        .bible-qa-container {
-            grid-template-columns: 1fr;
+        :root {
+            --living-gray: #666666;
+            --water-blue: #003b7a;
+            --tech-black: #000000;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
         }
         
-        .bible-qa-results {
-            min-height: 250px;
-        }
-    }
         * {
             margin: 0;
             padding: 0;
@@ -168,28 +24,20 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f8f9fa;
+            background-color: var(--light-gray);
+            padding: 0;
+            margin: 0;
         }
         
-        a {
-            text-decoration: none;
-            color: #0078d7;
-        }
-        
-        a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
         }
         
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #0078d7, #00a8e8, #0056b3);
+        /* Header for Bible Q&A */
+        .bible-header {
+            background: linear-gradient(135deg, var(--living-gray), var(--water-blue), #333);
             color: white;
             padding: 2rem 0;
             text-align: center;
@@ -197,7 +45,7 @@
             overflow: hidden;
         }
         
-        header::before {
+        .bible-header::before {
             content: '';
             position: absolute;
             top: 0;
@@ -208,169 +56,45 @@
             pointer-events: none;
         }
         
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
+        .logo-container {
             margin-bottom: 1rem;
-        }
-        
-        .tagline {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        /* Navigation */
-        nav {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
+            justify-content: center;
         }
         
-        .nav-logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: #0078d7;
+        .logo-svg {
+            max-width: 200px;
+            height: auto;
         }
         
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 1.5rem;
+        /* Bible Q&A Section */
+        .bible-qa {
+            padding: 2rem 0 4rem;
+            background-color: var(--light-gray);
             position: relative;
+            overflow: hidden;
         }
         
-        .nav-links a {
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
-            display: block;
-            padding: 0.5rem 0;
-        }
-        
-        .nav-links a:hover {
-            color: #0078d7;
-            text-decoration: none;
-        }
-        
-        .has-dropdown::after {
-            content: '▼';
-            font-size: 0.7rem;
-            margin-left: 0.5rem;
-            vertical-align: middle;
-        }
-        
-        .dropdown-menu {
+        .bible-qa::before {
+            content: '';
             position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            z-index: 100;
-            list-style: none;
-            padding: 0.5rem 0;
-        }
-        
-        .nav-links li:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .dropdown-menu li {
-            margin: 0;
-        }
-        
-        .dropdown-menu a {
-            padding: 0.75rem 1.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .dropdown-menu a:hover {
-            background-color: #f5f5f5;
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 4rem 0;
-            text-align: center;
-            background-color: white;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: #0078d7;
-        }
-        
-        .hero p {
-            font-size: 1.25rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            color: #555;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
-            background-color: #0078d7;
-            color: white;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            margin: 0 0.5rem;
-        }
-        
-        .btn:hover {
-            background-color: #0056b3;
-            text-decoration: none;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid white;
-        }
-        
-        .btn-outline:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .hero-buttons {
-            margin-top: 2rem;
-        }
-        
-        /* Features Section */
-        .features {
-            padding: 4rem 0;
-            background-color: #f8f9fa;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 59, 122, 0.05) 0%, rgba(0, 59, 122, 0) 70%);
+            z-index: 0;
         }
         
         .section-heading {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
         }
         
-        .section-heading h2 {
+        .section-heading h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: #333;
+            color: var(--water-blue);
         }
         
         .section-heading p {
@@ -380,384 +104,187 @@
             color: #666;
         }
         
-        .features-grid {
+        .bible-qa-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
         }
         
-        .feature-card {
+        .bible-qa-form {
             background-color: white;
             border-radius: 8px;
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #0078d7;
-            position: relative;
-        }
-        
-        .feature-card p {
-            color: #555;
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #0078d7, #00a8e8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-        
-        /* Community Section */
-        .community {
-            padding: 4rem 0;
-            background-color: white;
-        }
-        
-        .community-content {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-        }
-        
-        .community-text {
-            flex: 1;
-        }
-        
-        .community-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .community-text p {
-            font-size: 1.1rem;
+        .form-group {
             margin-bottom: 1.5rem;
-            color: #555;
         }
         
-        .community-image {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .community-image img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Showcase Section */
-        .showcase {
-            padding: 4rem 0;
-            background-color: white;
-        }
-        
-        .showcase-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .showcase-item {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .showcase-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .showcase-image {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .showcase-image img {
-            width: 100%;
+        .form-group label {
             display: block;
-            transition: transform 0.5s;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #444;
         }
         
-        .showcase-item:hover .showcase-image img {
-            transform: scale(1.05);
+        .form-control {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
         }
         
-        .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background-color: rgba(0, 120, 215, 0.8);
+        .form-control:focus {
+            border-color: var(--water-blue);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 59, 122, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            background-color: var(--water-blue);
             color: white;
-            border-radius: 50%;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #002555;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bible-qa-results {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            min-height: 300px;
             display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .initial-state {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            opacity: 0;
-            transition: opacity 0.3s, background-color 0.3s;
-        }
-        
-        .showcase-item:hover .play-button {
-            opacity: 1;
-        }
-        
-        .showcase-item h3 {
-            padding: 1.5rem 1.5rem 0.5rem;
-            font-size: 1.25rem;
-            color: #0078d7;
-        }
-        
-        .showcase-item p {
-            padding: 0 1.5rem 1.5rem;
-            color: #555;
-            font-size: 0.9rem;
-        }
-        
-        .showcase-cta {
+            height: 100%;
+            color: #999;
             text-align: center;
-            margin-top: 1rem;
         }
         
-        /* Support Section */
-        .support {
-            padding: 4rem 0;
-            background-color: #f8f9fa;
-        }
-        
-        .support-content {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-        }
-        
-        .support-image {
-            flex: 1;
-        }
-        
-        .support-image img {
-            width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .support-text {
-            flex: 1;
-        }
-        
-        .support-text h2 {
-            font-size: 2.5rem;
+        .scripture-icon {
+            font-size: 3rem;
             margin-bottom: 1rem;
-            color: #333;
+            opacity: 0.5;
         }
         
-        .support-text p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            color: #555;
+        .bible-answer {
+            flex: 1;
         }
         
-        .support-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
+        .bible-answer h3 {
+            color: var(--water-blue);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
         }
         
-        .stat-item {
-            text-align: center;
-            padding: 1rem;
+        .answer-content {
+            line-height: 1.7;
         }
         
-        .stat-number {
+        /* Bible verse styling - these will be generated by n8n */
+        .bible-verse {
+            background-color: #f5f7fa;
+            border-left: 4px solid var(--water-blue);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .verse-reference {
             display: block;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0078d7;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            color: #555;
+            text-align: right;
+            margin-top: 0.75rem;
+            font-style: normal;
             font-size: 0.9rem;
+            color: #555;
         }
         
-        /* Merchandise Preview */
-        .merch-preview {
-            padding: 4rem 0;
-            background-color: white;
-        }
-        
-        .merch-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .merch-item {
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .merch-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .merch-item img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-        
-        .merch-item h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        
-        .merch-item p {
-            color: #0078d7;
+        .verse-reference strong {
+            color: var(--water-blue);
             font-weight: 600;
         }
         
-        .merch-cta {
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .bible-verse {
-        background-color: #f5f7fa;
-        border-left: 4px solid var(--water-blue);
-        padding: 1rem 1.5rem;
-        margin: 1.5rem 0;
-        font-style: italic;
-        line-height: 1.6;
-        }
-
-        .bible-verse strong {
-        display: block;
-        text-align: right;
-        margin-top: 0.75rem;
-        font-style: normal;
-        }
-        /* Call to Action */
-        .cta {
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #0078d7, #00a8e8, #0056b3);
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        /* Loading animation */
+        .loading-dots {
+            display: inline-flex;
         }
         
-        .cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            pointer-events: none;
-        }
-        
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .cta p {
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            opacity: 0.9;
-        }
-        
-        .btn-light {
+        .dot {
+            width: 8px;
+            height: 8px;
+            margin: 0 4px;
+            border-radius: 50%;
             background-color: white;
-            color: #0078d7;
+            animation: dot-pulse 1.5s infinite ease-in-out;
         }
         
-        .btn-light:hover {
-            background-color: #f0f0f0;
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes dot-pulse {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
         }
         
         /* Footer */
-        footer {
-            background-color: #292929;
+        .bible-footer {
+            background-color: var(--tech-black);
             color: white;
-            padding: 3rem 0 1.5rem;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #f0f0f0;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer-links a {
-            color: #b0b0b0;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-            text-decoration: none;
-        }
-        
-        .footer-bottom {
+            padding: 1.5rem 0;
             text-align: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid #444;
-            color: #b0b0b0;
             font-size: 0.9rem;
         }
         
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .community-content {
-                flex-direction: column;
+        /* Responsive design */
+        @media (max-width: 992px) {
+            .bible-qa-container {
+                grid-template-columns: 1fr;
             }
             
-            .hero h1 {
-                font-size: 2.5rem;
+            .bible-qa-results {
+                min-height: 250px;
             }
             
-            .section-heading h2, .community-text h2, .cta h2 {
+            .section-heading h1 {
                 font-size: 2rem;
             }
         }
@@ -765,381 +292,145 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header class="bible-header">
         <div class="container">
-            <div class="logo">Living Water Tech</div>
-            <p class="tagline">Faith and Innovation</p>
+            <div class="logo-container">
+                <svg width="200" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+                  <!-- Living (Gray) -->
+                  <text x="200" y="120" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#666666" text-anchor="middle">LIVING</text>
+                  
+                  <!-- Water (Blue) -->
+                  <text x="200" y="200" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#003b7a" text-anchor="middle">WATER</text>
+                  
+                  <!-- Tech (Black) -->
+                  <text x="200" y="280" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#000000" text-anchor="middle">TECH</text>
+                  
+                  <!-- Tagline -->
+                  <text x="200" y="340" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle">Faith and Innovation</text>
+                </svg>
+            </div>
         </div>
     </header>
-    
-    <!-- Navigation -->
-    <nav>
-        <div class="container nav-container">
-            <a href="#" class="nav-logo">Living Water Tech</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#" class="has-dropdown">Ministry Tech</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">AI Integration</a></li>
-                        <li><a href="#">Automation</a></li>
-                        <li><a href="#">Digital Platforms</a></li>
-                    </ul>
-                </li>
-                <li><a href="#" class="has-dropdown">Production</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Video Services</a></li>
-                        <li><a href="#">Live Streaming</a></li>
-                        <li><a href="#">Audio Solutions</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Showcase</a></li>
-                <li><a href="#">Store</a></li>
-                <li><a href="#">Donate</a></li>
-                <li><a href="#">Community</a></li>
-                <li><a href="privacy-policy.html">Privacy</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <!-- Bible Q&A Section -->
-<section class="bible-qa">
-    <div class="container">
-        <div class="section-heading">
-            <h2>Ask a Bible Question</h2>
-            <p>Have questions about Scripture? Our AI-powered tool can help you find biblical answers.</p>
-        </div>
 
-        <div class="bible-qa-container">
-            <div class="bible-qa-form">
-                <form id="bibleQuestionForm">
-                    <div class="form-group">
-                        <label for="bibleQuestion">Your Question</label>
-                        <textarea id="bibleQuestion" class="form-control" placeholder="Example: What does the Bible say about forgiveness?" required></textarea>
-                    </div>
-                    <button type="submit" class="btn" id="askButton">
-                        <span class="btn-text">Ask Question</span>
-                        <span class="btn-loading" style="display: none;">
-                            <span class="loading-dots">
-                                <span class="dot"></span>
-                                <span class="dot"></span>
-                                <span class="dot"></span>
-                            </span>
-                        </span>
-                    </button>
-                </form>
-            </div>
-            <div class="bible-qa-results" id="bibleAnswerContainer">
-                <div class="initial-state">
-                    <div class="scripture-icon">📖</div>
-                    <p>Your Bible answers will appear here</p>
-                </div>
-                <!-- Answer will be inserted here -->
-            </div>
-        </div>
-    </div>
-</section>
-    
-    <!-- Call to Action -->
-    <section class="cta">
+    <!-- Bible Q&A Section -->
+    <section class="bible-qa">
         <div class="container">
-            <h2>Ready to Make an Impact?</h2>
-            <p>Join us in using technology to share the love of Christ with the world. Sign up today to access our resources, connect with our community, and start making a difference.</p>
-            <a href="#" class="btn btn-light">Get Started</a>
+            <div class="section-heading">
+                <h1>Ask a Bible Question</h1>
+                <p>Have questions about Scripture? Our tool can help you find biblical answers with relevant verse references.</p>
+            </div>
+
+            <div class="bible-qa-container">
+                <div class="bible-qa-form">
+                    <form id="bibleQuestionForm">
+                        <div class="form-group">
+                            <label for="bibleQuestion">Your Question</label>
+                            <textarea id="bibleQuestion" class="form-control" placeholder="Example: What does the Bible say about forgiveness?" required></textarea>
+                        </div>
+                        <button type="submit" class="btn" id="askButton">
+                            <span class="btn-text">Ask Question</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="loading-dots">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </span>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+                <div class="bible-qa-results" id="bibleAnswerContainer">
+                    <div class="initial-state">
+                        <div class="scripture-icon">📖</div>
+                        <p>Your Bible answers will appear here</p>
+                    </div>
+                    <!-- Answer will be inserted here -->
+                </div>
+            </div>
         </div>
     </section>
-    
+
     <!-- Footer -->
-    <footer>
+    <footer class="bible-footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h3>Living Water</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Our Mission</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Community</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Join Now</a></li>
-                        <li><a href="#">Member Resources</a></li>
-                        <li><a href="#">Events</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">Podcasts</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Living Water Tech. All Rights Reserved.</p>
-            </div>
+            <p>&copy; 2025 Living Water Tech. Empowering faith through innovation.</p>
         </div>
     </footer>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Living Water Tech website loaded successfully!');
+            const bibleQuestionForm = document.getElementById('bibleQuestionForm');
+            const bibleQuestion = document.getElementById('bibleQuestion');
+            const askButton = document.getElementById('askButton');
+            const btnText = askButton.querySelector('.btn-text');
+            const btnLoading = askButton.querySelector('.btn-loading');
+            const bibleAnswerContainer = document.getElementById('bibleAnswerContainer');
             
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
+            // The URL where your n8n webhook is hosted
+            const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai'; // Replace with your actual n8n webhook URL
             
-            // Reveal animations on scroll
-            const revealElements = document.querySelectorAll('.feature-card, .showcase-item, .merch-item');
-            
-            function checkScroll() {
-                revealElements.forEach(element => {
-                    const elementTop = element.getBoundingClientRect().top;
-                    const windowHeight = window.innerHeight;
-                    
-                    if (elementTop < windowHeight - 50) {
-                        element.style.opacity = '1';
-                        element.style.transform = 'translateY(0)';
-                    }
-                });
-            }
-            
-            // Initial styles for animation
-            revealElements.forEach(element => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(20px)';
-                element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            });
-            
-            // Check on scroll and initial load
-            window.addEventListener('scroll', checkScroll);
-            checkScroll();
-            
-            // Mobile menu toggle
-            const mobileMenuButton = document.createElement('button');
-            mobileMenuButton.className = 'mobile-menu-toggle';
-            mobileMenuButton.innerHTML = '☰';
-            document.querySelector('.nav-container').appendChild(mobileMenuButton);
-            
-            mobileMenuButton.addEventListener('click', function() {
-                const navLinks = document.querySelector('.nav-links');
-                navLinks.classList.toggle('mobile-active');
-                this.innerHTML = navLinks.classList.contains('mobile-active') ? '✕' : '☰';
-            });
-            
-            // Add mobile menu styles
-            const styleElement = document.createElement('style');
-            styleElement.textContent = `
-                .mobile-menu-toggle {
-                    display: none;
-                    background: none;
-                    border: none;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    color: #0078d7;
+            bibleQuestionForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const question = bibleQuestion.value.trim();
+                
+                if (!question) {
+                    return;
                 }
                 
-                @media (max-width: 992px) {
-                    .mobile-menu-toggle {
-                        display: block;
-                    }
-                    
-                    .nav-links {
-                        position: fixed;
-                        top: 0;
-                        right: -300px;
-                        width: 300px;
-                        height: 100vh;
-                        background-color: white;
-                        flex-direction: column;
-                        padding: 2rem;
-                        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-                        transition: right 0.3s ease;
-                        z-index: 1000;
-                    }
-                    
-                    .nav-links.mobile-active {
-                        right: 0;
-                    }
-                    
-                    .nav-links li {
-                        margin: 0 0 1rem 0;
-                    }
-                    
-                    .dropdown-menu {
-                        position: static;
-                        box-shadow: none;
-                        opacity: 1;
-                        visibility: visible;
-                        transform: none;
-                        max-height: 0;
-                        overflow: hidden;
-                        transition: max-height 0.3s ease;
-                    }
-                    
-                    .has-dropdown {
-                        cursor: pointer;
-                    }
-                    
-                    .has-dropdown.active + .dropdown-menu {
-                        max-height: 300px;
-                        padding: 0.5rem 0 0.5rem 1rem;
-                    }
-                }
-            `;
-            document.head.appendChild(styleElement);
-            
-            // Handle mobile dropdowns
-            document.querySelectorAll('.has-dropdown').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 992) {
-                        e.preventDefault();
-                        this.classList.toggle('active');
-                    }
-                });
-            });
-            
-            // Count-up animation for stats
-            const stats = document.querySelectorAll('.stat-number');
-            let animated = false;
-            
-            function animateStats() {
-                if (animated) return;
+                // Show loading state
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline-block';
+                askButton.disabled = true;
                 
-                const statsSection = document.querySelector('.support-stats');
-                if (!statsSection) return;
-                
-                const statsSectionTop = statsSection.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (statsSectionTop < windowHeight - 100) {
-                    stats.forEach(stat => {
-                        const target = parseInt(stat.textContent.replace(/[^0-9]/g, ''), 10);
-                        let count = 0;
-                        const duration = 2000; // ms
-                        const interval = Math.min(50, duration / target);
-                        const increment = target / (duration / interval);
-                        
-                        const counter = setInterval(() => {
-                            count += increment;
-                            if (count >= target) {
-                                stat.textContent = stat.textContent.includes('%') ? target + '%' : target;
-                                clearInterval(counter);
-                            } else {
-                                stat.textContent = stat.textContent.includes('%') ? Math.floor(count) + '%' : Math.floor(count);
-                            }
-                        }, interval);
+                try {
+                    // Send the question to n8n webhook
+                    const response = await fetch(n8nWebhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            question: question
+                        })
                     });
                     
-                    animated = true;
-                    window.removeEventListener('scroll', animateStats);
+                    if (!response.ok) {
+                        throw new Error('Failed to get answer');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Display the answer - since we're receiving HTML-formatted content from n8n
+                    bibleAnswerContainer.innerHTML = `
+                        <div class="bible-answer">
+                            <h3>Answer:</h3>
+                            <div class="answer-content">${data.answer}</div>
+                        </div>
+                    `;
+                    
+                    // Scroll to the answer container if it's out of view (mobile)
+                    if (window.innerWidth <= 992) {
+                        bibleAnswerContainer.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    bibleAnswerContainer.innerHTML = `
+                        <div class="bible-answer error">
+                            <h3>Sorry, there was an error</h3>
+                            <p>We couldn't process your question at this time. Please try again later.</p>
+                        </div>
+                    `;
+                } finally {
+                    // Restore button state
+                    btnText.style.display = 'inline-block';
+                    btnLoading.style.display = 'none';
+                    askButton.disabled = false;
                 }
-            }
-            
-            window.addEventListener('scroll', animateStats);
-            animateStats();
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-    const bibleQuestionForm = document.getElementById('bibleQuestionForm');
-    const bibleQuestion = document.getElementById('bibleQuestion');
-    const askButton = document.getElementById('askButton');
-    const btnText = askButton.querySelector('.btn-text');
-    const btnLoading = askButton.querySelector('.btn-loading');
-    const bibleAnswerContainer = document.getElementById('bibleAnswerContainer');
-    
-    // The URL where your n8n webhook is hosted
-    const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai'; // Replace with your actual n8n webhook URL
-    
-    bibleQuestionForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const question = bibleQuestion.value.trim();
-        
-        if (!question) {
-            return;
-        }
-        
-        // Show loading state
-        btnText.style.display = 'none';
-        btnLoading.style.display = 'inline-block';
-        askButton.disabled = true;
-        
-        try {
-            // Send the question to n8n webhook
-            const response = await fetch(n8nWebhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    question: question
-                })
             });
-            
-            if (!response.ok) {
-                throw new Error('Failed to get answer');
-            }
-            
-            const data = await response.json();
-            
-            // Display the answer
-            bibleAnswerContainer.innerHTML = `
-                <div class="bible-answer">
-                    <h3>Answer:</h3>
-                    <div class="answer-content">${formatBibleAnswer(data.answer)}</div>
-                </div>
-            `;
-            
-        } catch (error) {
-            console.error('Error:', error);
-            
-            bibleAnswerContainer.innerHTML = `
-                <div class="bible-answer error">
-                    <h3>Sorry, there was an error</h3>
-                    <p>We couldn't process your question at this time. Please try again later.</p>
-                </div>
-            `;
-        } finally {
-            // Restore button state
-            btnText.style.display = 'inline-block';
-            btnLoading.style.display = 'none';
-            askButton.disabled = false;
-        }
-    });
-    
-    // Helper function to format Bible verses in the answer
-    function formatBibleAnswer(answer) {
-        // Pattern to match Bible verse references (e.g., John 3:16, Romans 8:28-30)
-        const versePattern = /([1-3]?\s?[A-Za-z]+\s\d+:\d+(?:-\d+)?)/g;
-        
-        // Replace verse references with marked-up versions
-        return answer.replace(versePattern, '<strong>$1</strong>');
-    }
-});
+        });
     </script>
-    </body>
+</body>
 </html>
