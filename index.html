@@ -7,26 +7,39 @@
     <style>
         /* Reset and Base Styles */
         :root {
-            --living-gray: #666666;
-            --water-blue: #003b7a;
-            --tech-black: #000000;
-            --light-gray: #f8f9fa;
-            --white: #ffffff;
+            --living-gray: #8a8a8a;
+            --water-blue: #4e8ed5;
+            --tech-black: #121212;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #121212;
+            --card-bg: #232323;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --light-accent: rgba(78, 142, 213, 0.15);
+            --border-color: #333;
+            --highlight: #4e8ed5;
+            --error-color: #e57373;
+            --transition-speed: 0.3s;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color var(--transition-speed), 
+                        color var(--transition-speed), 
+                        transform var(--transition-speed), 
+                        opacity var(--transition-speed);
         }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background-color: var(--light-gray);
+            color: var(--text-primary);
+            background-color: var(--dark-bg);
             padding: 0;
             margin: 0;
+            overflow-x: hidden;
         }
         
         .container {
@@ -37,12 +50,25 @@
         
         /* Header for Bible Q&A */
         .bible-header {
-            background: linear-gradient(135deg, var(--living-gray), var(--water-blue), #333);
+            background: linear-gradient(135deg, #121212, var(--water-blue), #121212);
             color: white;
-            padding: 2rem 0;
+            padding: 2.5rem 0;
             text-align: center;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            animation: headerFadeIn 1.2s ease-out;
+        }
+        
+        @keyframes headerFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .bible-header::before {
@@ -52,8 +78,18 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            background: radial-gradient(circle at 30% 50%, rgba(78, 142, 213, 0.2) 0%, rgba(78, 142, 213, 0) 70%);
             pointer-events: none;
+            animation: glowPulse 8s infinite alternate;
+        }
+        
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.4;
+            }
+            100% {
+                opacity: 0.8;
+            }
         }
         
         .logo-container {
@@ -69,10 +105,22 @@
         
         /* Bible Q&A Section */
         .bible-qa {
-            padding: 2rem 0 4rem;
-            background-color: var(--light-gray);
+            padding: 3rem 0 5rem;
+            background-color: var(--dark-bg);
             position: relative;
             overflow: hidden;
+            animation: contentFadeIn 0.8s ease-out 0.3s backwards;
+        }
+        
+        @keyframes contentFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .bible-qa::before {
@@ -80,28 +128,53 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 59, 122, 0.05) 0%, rgba(0, 59, 122, 0) 70%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(78, 142, 213, 0.05) 0%, rgba(78, 142, 213, 0) 70%);
             z-index: 0;
+            animation: backgroundGlow 15s infinite alternate;
+        }
+        
+        @keyframes backgroundGlow {
+            0% {
+                opacity: 0.3;
+                transform: translate(0, 0);
+            }
+            100% {
+                opacity: 0.7;
+                transform: translate(50px, -50px);
+            }
         }
         
         .section-heading {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
+            animation: slideUp 0.8s ease-out 0.5s backwards;
+        }
+        
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .section-heading h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--water-blue);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
         .section-heading p {
             font-size: 1.1rem;
             max-width: 700px;
             margin: 0 auto;
-            color: #666;
+            color: var(--text-secondary);
         }
         
         .bible-qa-container {
@@ -114,68 +187,131 @@
         }
         
         .bible-qa-form {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2.2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transform-origin: center;
+            animation: cardAppear 0.6s ease-out 0.7s backwards;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .bible-qa-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
         
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             font-weight: 500;
-            color: #444;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            transition: color 0.3s;
         }
         
         .form-control {
             width: 100%;
             min-height: 150px;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             resize: vertical;
             font-family: inherit;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            background-color: rgba(18, 18, 18, 0.7);
+            color: var(--text-primary);
+            transition: all 0.3s;
         }
         
         .form-control:focus {
             border-color: var(--water-blue);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 59, 122, 0.1);
+            box-shadow: 0 0 0 3px rgba(78, 142, 213, 0.15);
+            background-color: rgba(18, 18, 18, 0.9);
         }
         
         .btn {
             display: inline-block;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
+            padding: 0.9rem 1.8rem;
+            border-radius: 8px;
             background-color: var(--water-blue);
             color: white;
             font-weight: 500;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(78, 142, 213, 0.3);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: all 0.6s ease;
         }
         
         .btn:hover {
-            background-color: #002555;
+            background-color: #3678c5;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(78, 142, 213, 0.4);
+        }
+        
+        .btn:hover::after {
+            left: 100%;
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(78, 142, 213, 0.3);
         }
         
         .bible-qa-results {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2.2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             min-height: 300px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            animation: cardAppear 0.6s ease-out 0.9s backwards;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .bible-qa-results:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
         }
         
         .initial-state {
@@ -184,47 +320,82 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: #999;
+            color: var(--text-secondary);
             text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
         
         .scripture-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+            animation: float 5s ease-in-out infinite;
+            color: var(--water-blue);
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
         }
         
         .bible-answer {
             flex: 1;
+            animation: fadeIn 0.8s ease;
         }
         
         .bible-answer h3 {
             color: var(--water-blue);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
         }
         
         .answer-content {
-            line-height: 1.7;
+            line-height: 1.8;
         }
         
-        /* Bible verse styling - these will be generated by n8n */
+        /* Bible verse styling */
         .bible-verse {
-            background-color: #f5f7fa;
+            background-color: rgba(78, 142, 213, 0.1);
             border-left: 4px solid var(--water-blue);
-            padding: 1rem 1.5rem;
-            margin: 1.5rem 0;
+            padding: 1.2rem 1.5rem;
+            margin: 1.8rem 0;
             font-style: italic;
-            line-height: 1.6;
+            line-height: 1.8;
+            border-radius: 0 8px 8px 0;
+            animation: slideFadeIn 0.5s ease;
+        }
+        
+        @keyframes slideFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         .verse-reference {
             display: block;
             text-align: right;
-            margin-top: 0.75rem;
+            margin-top: 0.9rem;
             font-style: normal;
-            font-size: 0.9rem;
-            color: #555;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
         }
         
         .verse-reference strong {
@@ -268,13 +439,61 @@
         /* Footer */
         .bible-footer {
             background-color: var(--tech-black);
-            color: white;
-            padding: 1.5rem 0;
+            color: var(--text-secondary);
+            padding: 1.7rem 0;
             text-align: center;
             font-size: 0.9rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+            animation: footerAppear 1s ease-out 1.2s backwards;
         }
         
-        /* Responsive design */
+        @keyframes footerAppear {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        /* Page transition effect */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--tech-black);
+            z-index: 9999;
+            pointer-events: none;
+            animation: pageTransition 1.2s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+        }
+        
+        @keyframes pageTransition {
+            0% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+            50% {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+            50.1% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+            100% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+        }
+        
+        /* Error state */
+        .error {
+            color: var(--error-color);
+        }
+        
+        /* Responsive design with animations */
         @media (max-width: 992px) {
             .bible-qa-container {
                 grid-template-columns: 1fr;
@@ -287,13 +506,57 @@
             .section-heading h1 {
                 font-size: 2rem;
             }
+            
+            .bible-qa-form, .bible-qa-results {
+                animation-delay: 0.5s;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .bible-header {
+                padding: 2rem 0;
+            }
+            
+            .section-heading h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-heading p {
+                font-size: 1rem;
+            }
+            
+            .bible-qa-form, .bible-qa-results {
+                padding: 1.8rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Subtle scroll animation for content */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+        
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
+    <!-- Page Transition Effect -->
+    <div class="page-transition"></div>
+
     <!-- Header -->
     <header class="bible-header">
         <div class="container">
+            <div class="logo-container">
+                <!-- Bible icon as text since we don't have the original logo -->
+                <div style="font-size: 3.5rem; color: var(--water-blue);">📖</div>
             </div>
         </div>
     </header>
@@ -307,7 +570,7 @@
             </div>
 
             <div class="bible-qa-container">
-                <div class="bible-qa-form">
+                <div class="bible-qa-form scroll-animate">
                     <form id="bibleQuestionForm">
                         <div class="form-group">
                             <label for="bibleQuestion">Your Question</label>
@@ -325,7 +588,7 @@
                         </button>
                     </form>
                 </div>
-                <div class="bible-qa-results" id="bibleAnswerContainer">
+                <div class="bible-qa-results scroll-animate" id="bibleAnswerContainer">
                     <div class="initial-state">
                         <div class="scripture-icon">📖</div>
                         <p>Your Bible answers will appear here</p>
@@ -345,6 +608,79 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Reveal elements on scroll
+            const scrollElements = document.querySelectorAll('.scroll-animate');
+            
+            const elementInView = (el, dividend = 1) => {
+                const elementTop = el.getBoundingClientRect().top;
+                return (
+                    elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
+                );
+            };
+            
+            const displayScrollElement = (element) => {
+                element.classList.add('visible');
+            };
+            
+            const handleScrollAnimation = () => {
+                scrollElements.forEach((el) => {
+                    if (elementInView(el, 1.25)) {
+                        displayScrollElement(el);
+                    }
+                });
+            };
+            
+            // Initial check
+            setTimeout(() => {
+                handleScrollAnimation();
+            }, 100);
+            
+            // On scroll
+            window.addEventListener('scroll', () => {
+                handleScrollAnimation();
+            });
+            
+            // Ripple effect for button
+            const buttons = document.querySelectorAll('.btn');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const x = e.clientX - e.target.getBoundingClientRect().left;
+                    const y = e.clientY - e.target.getBoundingClientRect().top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.style.position = 'absolute';
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.width = '100px';
+                    ripple.style.height = '100px';
+                    ripple.style.left = `${x - 50}px`;
+                    ripple.style.top = `${y - 50}px`;
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.opacity = '1';
+                    
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            // Add ripple animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(3);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Form handling
             const bibleQuestionForm = document.getElementById('bibleQuestionForm');
             const bibleQuestion = document.getElementById('bibleQuestion');
             const askButton = document.getElementById('askButton');
@@ -353,7 +689,7 @@
             const bibleAnswerContainer = document.getElementById('bibleAnswerContainer');
             
             // The URL where your n8n webhook is hosted
-            const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai'; // Replace with your actual n8n webhook URL
+            const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai';
             
             bibleQuestionForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -364,58 +700,176 @@
                     return;
                 }
                 
-                // Show loading state
+                // Show loading state with animation
                 btnText.style.display = 'none';
                 btnLoading.style.display = 'inline-block';
                 askButton.disabled = true;
                 
-                try {
-                    // Send the question to n8n webhook
-                    const response = await fetch(n8nWebhookUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            question: question
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error('Failed to get answer');
+                // Clear previous content with fade out
+                bibleAnswerContainer.style.opacity = '0';
+                
+                setTimeout(async () => {
+                    try {
+                        // Replace initial state
+                        bibleAnswerContainer.innerHTML = `
+                            <div class="initial-state" style="opacity: 0.7;">
+                                <div class="scripture-icon" style="animation: pulse 1.5s infinite alternate;">📖</div>
+                                <p>Searching for biblical wisdom...</p>
+                            </div>
+                        `;
+                        
+                        // Fade in loading state
+                        setTimeout(() => {
+                            bibleAnswerContainer.style.opacity = '1';
+                        }, 100);
+                        
+                        // Send the question to n8n webhook
+                        const response = await fetch(n8nWebhookUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                question: question
+                            })
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error('Failed to get answer');
+                        }
+                        
+                        const data = await response.json();
+                        
+                        // Fade out loading state
+                        bibleAnswerContainer.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            // Display the answer with animation
+                            bibleAnswerContainer.innerHTML = `
+                                <div class="bible-answer">
+                                    <h3>Answer:</h3>
+                                    <div class="answer-content">${data.answer}</div>
+                                </div>
+                            `;
+                            
+                            // Apply animation to verses
+                            const verses = bibleAnswerContainer.querySelectorAll('.bible-verse');
+                            verses.forEach((verse, index) => {
+                                verse.style.animation = `slideFadeIn 0.5s ease ${index * 0.2}s backwards`;
+                            });
+                            
+                            // Fade in content
+                            setTimeout(() => {
+                                bibleAnswerContainer.style.opacity = '1';
+                            }, 100);
+                            
+                            // Scroll to the answer container if it's out of view (mobile)
+                            if (window.innerWidth <= 992) {
+                                bibleAnswerContainer.scrollIntoView({ 
+                                    behavior: 'smooth',
+                                    block: 'nearest'
+                                });
+                            }
+                        }, 400);
+                        
+                    } catch (error) {
+                        console.error('Error:', error);
+                        
+                        // Fade out loading state
+                        bibleAnswerContainer.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            bibleAnswerContainer.innerHTML = `
+                                <div class="bible-answer error">
+                                    <h3>Sorry, there was an error</h3>
+                                    <p>We couldn't process your question at this time. Please try again later.</p>
+                                </div>
+                            `;
+                            
+                            // Fade in error state
+                            setTimeout(() => {
+                                bibleAnswerContainer.style.opacity = '1';
+                            }, 100);
+                        }, 400);
+                    } finally {
+                        // Restore button state with animation
+                        setTimeout(() => {
+                            btnText.style.display = 'inline-block';
+                            btnLoading.style.display = 'none';
+                            askButton.disabled = false;
+                        }, 600);
                     }
-                    
-                    const data = await response.json();
-                    
-                    // Display the answer - since we're receiving HTML-formatted content from n8n
-                    bibleAnswerContainer.innerHTML = `
-                        <div class="bible-answer">
-                            <h3>Answer:</h3>
-                            <div class="answer-content">${data.answer}</div>
-                        </div>
-                    `;
-                    
-                    // Scroll to the answer container if it's out of view (mobile)
-                    if (window.innerWidth <= 992) {
-                        bibleAnswerContainer.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    
-                } catch (error) {
-                    console.error('Error:', error);
-                    
-                    bibleAnswerContainer.innerHTML = `
-                        <div class="bible-answer error">
-                            <h3>Sorry, there was an error</h3>
-                            <p>We couldn't process your question at this time. Please try again later.</p>
-                        </div>
-                    `;
-                } finally {
-                    // Restore button state
-                    btnText.style.display = 'inline-block';
-                    btnLoading.style.display = 'none';
-                    askButton.disabled = false;
-                }
+                }, 400);
             });
+            
+            // Add focus effects
+            const formControls = document.querySelectorAll('.form-control');
+            
+            formControls.forEach(control => {
+                control.addEventListener('focus', function() {
+                    const label = this.previousElementSibling;
+                    if (label && label.tagName === 'LABEL') {
+                        label.style.color = 'var(--water-blue)';
+                    }
+                });
+                
+                control.addEventListener('blur', function() {
+                    const label = this.previousElementSibling;
+                    if (label && label.tagName === 'LABEL') {
+                        label.style.color = 'var(--text-secondary)';
+                    }
+                });
+            });
+            
+            // Create typing indicator function
+            const createTypingEffect = (element, text, speed = 20) => {
+                let i = 0;
+                element.textContent = '';
+                
+                return new Promise((resolve) => {
+                    const typing = setInterval(() => {
+                        if (i < text.length) {
+                            element.textContent += text.charAt(i);
+                            i++;
+                        } else {
+                            clearInterval(typing);
+                            resolve();
+                        }
+                    }, speed);
+                });
+            };
+            
+            // Optional: Preload animation for placeholder
+            setTimeout(() => {
+                const placeholder = bibleQuestion.getAttribute('placeholder');
+                bibleQuestion.setAttribute('placeholder', '');
+                
+                let placeholderElement = document.createElement('div');
+                placeholderElement.style.position = 'absolute';
+                placeholderElement.style.color = '#555';
+                placeholderElement.style.pointerEvents = 'none';
+                placeholderElement.style.left = '1.2rem';
+                placeholderElement.style.top = '1.2rem';
+                
+                // Insert after textarea
+                bibleQuestion.parentNode.insertBefore(placeholderElement, bibleQuestion.nextSibling);
+                
+                // Only show if textarea is empty and not focused
+                if (!bibleQuestion.value && document.activeElement !== bibleQuestion) {
+                    createTypingEffect(placeholderElement, placeholder, 50);
+                }
+                
+                // Handle focus events for placeholder
+                bibleQuestion.addEventListener('focus', () => {
+                    placeholderElement.style.display = 'none';
+                });
+                
+                bibleQuestion.addEventListener('blur', () => {
+                    if (!bibleQuestion.value) {
+                        placeholderElement.style.display = 'block';
+                    }
+                });
+            }, 2000);
         });
     </script>
 </body>
