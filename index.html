@@ -6,6 +6,158 @@
     <title>Living Water Tech - Faith and Innovation</title>
     <style>
         /* Reset and Base Styles */
+        .bible-qa {
+        padding: 4rem 0;
+        background-color: #f9f9f9;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .bible-qa::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(0, 59, 122, 0.05) 0%, rgba(0, 59, 122, 0) 70%);
+        z-index: 0;
+    }
+    
+    .bible-qa-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .bible-qa-form {
+        background-color: white;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .bible-qa-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #444;
+    }
+    
+    .bible-qa-form textarea {
+        width: 100%;
+        min-height: 150px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+    
+    .bible-qa-form textarea:focus {
+        border-color: var(--water-blue);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 59, 122, 0.1);
+    }
+    
+    .bible-qa-results {
+        background-color: white;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .initial-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #999;
+        text-align: center;
+    }
+    
+    .scripture-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .bible-answer {
+        flex: 1;
+    }
+    
+    .bible-answer h3 {
+        color: var(--water-blue);
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+    }
+    
+    .bible-verse {
+        background-color: #f5f7fa;
+        border-left: 3px solid var(--water-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        font-style: italic;
+    }
+    
+    .verse-reference {
+        font-weight: 600;
+        display: block;
+        margin-top: 0.5rem;
+        text-align: right;
+    }
+    
+    /* Loading animation */
+    .loading-dots {
+        display: inline-flex;
+    }
+    
+    .dot {
+        width: 8px;
+        height: 8px;
+        margin: 0 4px;
+        border-radius: 50%;
+        background-color: white;
+        animation: dot-pulse 1.5s infinite ease-in-out;
+    }
+    
+    .dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    
+    .dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+    
+    @keyframes dot-pulse {
+        0%, 100% {
+            transform: scale(0.8);
+            opacity: 0.6;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .bible-qa-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .bible-qa-results {
+            min-height: 250px;
+        }
+    }
         * {
             margin: 0;
             padding: 0;
@@ -764,7 +916,43 @@
             </div>
         </div>
     </section>
-    
+    <!-- Bible Q&A Section -->
+<section class="bible-qa">
+    <div class="container">
+        <div class="section-heading">
+            <h2>Ask a Bible Question</h2>
+            <p>Have questions about Scripture? Our AI-powered tool can help you find biblical answers.</p>
+        </div>
+
+        <div class="bible-qa-container">
+            <div class="bible-qa-form">
+                <form id="bibleQuestionForm">
+                    <div class="form-group">
+                        <label for="bibleQuestion">Your Question</label>
+                        <textarea id="bibleQuestion" class="form-control" placeholder="Example: What does the Bible say about forgiveness?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn" id="askButton">
+                        <span class="btn-text">Ask Question</span>
+                        <span class="btn-loading" style="display: none;">
+                            <span class="loading-dots">
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+            <div class="bible-qa-results" id="bibleAnswerContainer">
+                <div class="initial-state">
+                    <div class="scripture-icon">📖</div>
+                    <p>Your Bible answers will appear here</p>
+                </div>
+                <!-- Answer will be inserted here -->
+            </div>
+        </div>
+    </div>
+</section>
     <!-- Merchandise Preview -->
     <section class="merch-preview">
         <div class="container">
@@ -1024,6 +1212,83 @@
             window.addEventListener('scroll', animateStats);
             animateStats();
         });
+        document.addEventListener('DOMContentLoaded', function() {
+    const bibleQuestionForm = document.getElementById('bibleQuestionForm');
+    const bibleQuestion = document.getElementById('bibleQuestion');
+    const askButton = document.getElementById('askButton');
+    const btnText = askButton.querySelector('.btn-text');
+    const btnLoading = askButton.querySelector('.btn-loading');
+    const bibleAnswerContainer = document.getElementById('bibleAnswerContainer');
+    
+    // The URL where your n8n webhook is hosted
+    const n8nWebhookUrl = 'https://your-n8n-instance.com/webhook/bible-qa'; // Replace with your actual n8n webhook URL
+    
+    bibleQuestionForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const question = bibleQuestion.value.trim();
+        
+        if (!question) {
+            return;
+        }
+        
+        // Show loading state
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline-block';
+        askButton.disabled = true;
+        
+        try {
+            // Send the question to n8n webhook
+            const response = await fetch(n8nWebhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    question: question
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to get answer');
+            }
+            
+            const data = await response.json();
+            
+            // Display the answer
+            bibleAnswerContainer.innerHTML = `
+                <div class="bible-answer">
+                    <h3>Answer:</h3>
+                    <div class="answer-content">${formatBibleAnswer(data.answer)}</div>
+                </div>
+            `;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            
+            bibleAnswerContainer.innerHTML = `
+                <div class="bible-answer error">
+                    <h3>Sorry, there was an error</h3>
+                    <p>We couldn't process your question at this time. Please try again later.</p>
+                </div>
+            `;
+        } finally {
+            // Restore button state
+            btnText.style.display = 'inline-block';
+            btnLoading.style.display = 'none';
+            askButton.disabled = false;
+        }
+    });
+    
+    // Helper function to format Bible verses in the answer
+    function formatBibleAnswer(answer) {
+        // Pattern to match Bible verse references (e.g., John 3:16, Romans 8:28-30)
+        const versePattern = /([1-3]?\s?[A-Za-z]+\s\d+:\d+(?:-\d+)?)/g;
+        
+        // Replace verse references with marked-up versions
+        return answer.replace(versePattern, '<strong>$1</strong>');
+    }
+});
     </script>
     </body>
 </html>
