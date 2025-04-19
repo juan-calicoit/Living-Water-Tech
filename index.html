@@ -1,4 +1,898 @@
-<!DOCTYPE html>
+top: 0;
+            left: 0;
+            width: 1440px;
+            height: 320px;
+            fill: var(--dark-bg);
+        </svg>
+    </header>
+
+    <!-- Bible Q&A Section -->
+    <section class="bible-qa" id="main-content">
+        <div class="container">
+            <div class="section-heading">
+                <h1>Ask a Bible Question</h1>
+                <p>Have questions about Scripture? Our tool can help you find biblical answers with relevant verse references.</p>
+            </div>
+
+            <!-- Language Toggle -->
+            <div class="language-toggle">
+                <button class="lang-btn active" data-lang="en-US">
+                    <span class="lang-emoji">🇺🇸</span>
+                    <span class="lang-text">English</span>
+                </button>
+                <button class="lang-btn" data-lang="es-MX">
+                    <span class="lang-emoji">🇲🇽</span>
+                    <span class="lang-text">Español</span>
+                </button>
+            </div>
+
+            <div class="bible-qa-container">
+                <div class="bible-qa-form">
+                    <form id="bibleQuestionForm">
+                        <div class="input-controls">
+                            <label for="bibleQuestion" id="question-label">Your Question</label>
+                            <div class="input-options">
+                                <button type="button" class="input-option" id="voice-btn" aria-label="Voice input">
+                                    <i class="fa-solid fa-microphone"></i>
+                                    <span class="tooltip">Voice input</span>
+                                </button>
+                                <button type="button" class="input-option" id="clear-btn" aria-label="Clear text">
+                                    <i class="fa-solid fa-times"></i>
+                                    <span class="tooltip">Clear</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="bibleQuestion" class="form-control" placeholder="Example: What does the Bible say about forgiveness?" required aria-labelledby="question-label"></textarea>
+                            <div class="voice-animation" id="voice-animation" style="display: none;">
+                                <div class="voice-wave"></div>
+                                <div class="voice-wave"></div>
+                                <div class="voice-wave"></div>
+                                <i class="fa-solid fa-microphone voice-icon"></i>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn pulse" id="askButton">
+                            <span class="btn-text" id="submit-text">Ask Question</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="loading-dots">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </span>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+                <div class="bible-qa-results" id="bibleAnswerContainer">
+                    <div class="initial-state">
+                        <div class="scripture-icon">📖</div>
+                        <p id="initial-text">Your Bible answers will appear here</p>
+                    </div>
+                    <!-- Answer will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Confetti Container (Hidden by default) -->
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <!-- Success Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="toast-message">Verse copied to clipboard!</div>
+    </div>
+
+    <!-- Accessibility Panel -->
+    <div class="a11y-panel">
+        <button class="a11y-toggle" id="a11y-toggle" aria-label="Accessibility options">
+            <i class="fa-solid fa-universal-access"></i>
+        </button>
+        <div class="a11y-options" id="a11y-options">
+            <div class="a11y-option">
+                <label for="high-contrast">High contrast</label>
+                <label class="a11y-switch">
+                    <input type="checkbox" id="high-contrast">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="a11y-option">
+                <label for="focus-mode">Focus mode</label>
+                <label class="a11y-switch">
+                    <input type="checkbox" id="focus-mode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="a11y-option">
+                <label for="reduce-motion">Reduce motion</label>
+                <label class="a11y-switch">
+                    <input type="checkbox" id="reduce-motion">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="a11y-option">
+                <label for="text-to-speech">Text to speech</label>
+                <label class="a11y-switch">
+                    <input type="checkbox" id="text-to-speech">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bible-footer">
+        <div class="container">
+            <p>&copy; 2025 Living Water Tech. Empowering faith through innovation.</p>
+        </div>
+    </footer>
+
+    <!-- Font Awesome Icons (from CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language Toggle
+            initLanguageToggle();
+            
+            // Create particles
+            createParticles();
+            
+            // Initialize accessibility features
+            initA11y();
+            
+            // Form handling with focus effects
+            const bibleQuestionForm = document.getElementById('bibleQuestionForm');
+            const bibleQuestion = document.getElementById('bibleQuestion');
+            const askButton = document.getElementById('askButton');
+            const btnText = askButton.querySelector('.btn-text');
+            const btnLoading = askButton.querySelector('.btn-loading');
+            const bibleAnswerContainer = document.getElementById('bibleAnswerContainer');
+            const voiceBtn = document.getElementById('voice-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const voiceAnimation = document.getElementById('voice-animation');
+            
+            // Form focus effects
+            const formGroup = document.querySelector('.form-group');
+            
+            bibleQuestion.addEventListener('focus', function() {
+                formGroup.classList.add('focused');
+            });
+            
+            bibleQuestion.addEventListener('blur', function() {
+                formGroup.classList.remove('focused');
+            });
+            
+            // Clear text button
+            clearBtn.addEventListener('click', function() {
+                bibleQuestion.value = '';
+                bibleQuestion.focus();
+            });
+            
+            // Voice input simulation
+            let isRecording = false;
+            
+            voiceBtn.addEventListener('click', function() {
+                if (!isRecording) {
+                    startVoiceInput();
+                } else {
+                    stopVoiceInput();
+                }
+            });
+            
+            function startVoiceInput() {
+                isRecording = true;
+                voiceBtn.classList.add('active');
+                voiceAnimation.style.display = 'flex';
+                
+                // Simulate recording for 3 seconds then add text
+                setTimeout(() => {
+                    stopVoiceInput();
+                    
+                    // Get current language
+                    const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
+                    
+                    // Add simulated text based on language
+                    if (currentLang === 'en-US') {
+                        bibleQuestion.value += (bibleQuestion.value ? ' ' : '') + 'What does the Bible say about love?';
+                    } else {
+                        bibleQuestion.value += (bibleQuestion.value ? ' ' : '') + '¿Qué dice la Biblia sobre el amor?';
+                    }
+                }, 3000);
+            }
+            
+            function stopVoiceInput() {
+                isRecording = false;
+                voiceBtn.classList.remove('active');
+                voiceAnimation.style.display = 'none';
+            }
+            
+            // The URL where your n8n webhook is hosted
+            const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai';
+            
+            bibleQuestionForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const question = bibleQuestion.value.trim();
+                
+                if (!question) {
+                    return;
+                }
+                
+                // Stop button pulse animation
+                askButton.classList.remove('pulse');
+                
+                // Show loading state with animation
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline-block';
+                askButton.disabled = true;
+                
+                // Clear previous content
+                bibleAnswerContainer.style.opacity = '0';
+                
+                setTimeout(async () => {
+                    try {
+                        // Replace with advanced loader
+                        bibleAnswerContainer.innerHTML = `
+                            <div class="initial-state" style="opacity: 0.9;">
+                                <div class="advanced-loader">
+                                    <div class="loader-bible">
+                                        <span>📖</span>
+                                    </div>
+                                </div>
+                                <p>${getCurrentLanguage().searching}</p>
+                            </div>
+                        `;
+                        
+                        // Fade in loading state
+                        setTimeout(() => {
+                            bibleAnswerContainer.style.opacity = '1';
+                        }, 100);
+                        
+                        // Send the question to n8n webhook
+                        const response = await fetch(n8nWebhookUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                question: question
+                            })
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error('Failed to get answer');
+                        }
+                        
+                        const data = await response.json();
+                        
+                        // Fade out loading state
+                        bibleAnswerContainer.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            // Display the answer with animation
+                            bibleAnswerContainer.innerHTML = `
+                                <div class="bible-answer">
+                                    <h3>${getCurrentLanguage().answer}</h3>
+                                    <div class="answer-content">${data.answer}</div>
+                                    
+                                    <div class="related-questions">
+                                        <h4>${getCurrentLanguage().related}</h4>
+                                        <div class="question-chips">
+                                            <button class="question-chip">${getCurrentLanguage().relatedQuestion1}</button>
+                                            <button class="question-chip">${getCurrentLanguage().relatedQuestion2}</button>
+                                            <button class="question-chip">${getCurrentLanguage().relatedQuestion3}</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="action-buttons">
+                                        <button class="action-btn" id="speak-btn">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                            ${getCurrentLanguage().speak}
+                                        </button>
+                                        <button class="action-btn" id="save-btn">
+                                            <i class="fa-solid fa-bookmark"></i>
+                                            ${getCurrentLanguage().save}
+                                        </button>
+                                        <button class="action-btn" id="share-btn">
+                                            <i class="fa-solid fa-share-nodes"></i>
+                                            ${getCurrentLanguage().share}
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            // Process and enhance verses
+                            enhanceVerses();
+                            
+                            // Create confetti celebration
+                            createConfetti();
+                            
+                            // Setup related questions click handlers
+                            setupRelatedQuestions();
+                            
+                            // Setup action buttons
+                            setupActionButtons();
+                            
+                            // Fade in content
+                            setTimeout(() => {
+                                bibleAnswerContainer.style.opacity = '1';
+                            }, 100);
+                            
+                            // Scroll to the answer container if it's out of view (mobile)
+                            if (window.innerWidth <= 992) {
+                                bibleAnswerContainer.scrollIntoView({ 
+                                    behavior: 'smooth',
+                                    block: 'nearest'
+                                });
+                            }
+                        }, 400);
+                        
+                    } catch (error) {
+                        console.error('Error:', error);
+                        
+                        // Fade out loading state
+                        bibleAnswerContainer.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            bibleAnswerContainer.innerHTML = `
+                                <div class="bible-answer error">
+                                    <h3>${getCurrentLanguage().errorTitle}</h3>
+                                    <div class="error-container">
+                                        <p>${getCurrentLanguage().errorMessage}</p>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            // Fade in error state
+                            setTimeout(() => {
+                                bibleAnswerContainer.style.opacity = '1';
+                            }, 100);
+                        }, 400);
+                    } finally {
+                        // Restore button state with animation
+                        setTimeout(() => {
+                            btnText.style.display = 'inline-block';
+                            btnLoading.style.display = 'none';
+                            askButton.disabled = false;
+                            
+                            // Restart pulse animation after a delay
+                            setTimeout(() => {
+                                askButton.classList.add('pulse');
+                            }, 1000);
+                        }, 600);
+                    }
+                }, 400);
+            });
+            
+            // Setup related questions
+            function setupRelatedQuestions() {
+                const questionChips = document.querySelectorAll('.question-chip');
+                
+                questionChips.forEach(chip => {
+                    chip.addEventListener('click', function() {
+                        bibleQuestion.value = this.textContent;
+                        askButton.click();
+                    });
+                });
+            }
+            
+            // Setup action buttons
+            function setupActionButtons() {
+                const speakBtn = document.getElementById('speak-btn');
+                const saveBtn = document.getElementById('save-btn');
+                const shareBtn = document.getElementById('share-btn');
+                const toast = document.getElementById('toast');
+                
+                // Speak button
+                if (speakBtn) {
+                    speakBtn.addEventListener('click', function() {
+                        const answerContent = document.querySelector('.answer-content');
+                        if (answerContent && 'speechSynthesis' in window) {
+                            // Get only text content, excluding verse references
+                            let text = answerContent.textContent;
+                            
+                            // Create utterance with current language
+                            const utterance = new SpeechSynthesisUtterance(text);
+                            const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
+                            utterance.lang = currentLang;
+                            
+                            window.speechSynthesis.speak(utterance);
+                        }
+                    });
+                }
+                
+                // Save button
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', function() {
+                        // Show toast
+                        showToast(getCurrentLanguage().savedMessage);
+                    });
+                }
+                
+                // Share button
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', function() {
+                        // Show toast with different message
+                        showToast(getCurrentLanguage().sharedMessage);
+                    });
+                }
+            }
+            
+            // Show toast message
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                const toastMessage = toast.querySelector('.toast-message');
+                
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Function to enhance Bible verses with animations and styling
+            function enhanceVerses() {
+                const verses = document.querySelectorAll('.bible-verse');
+                
+                verses.forEach((verse, index) => {
+                    // Wrap in a container for tools
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'verse-wrapper';
+                    verse.parentNode.insertBefore(wrapper, verse);
+                    wrapper.appendChild(verse);
+                    
+                    // Add verse tools
+                    const toolsDiv = document.createElement('div');
+                    toolsDiv.className = 'verse-tools';
+                    toolsDiv.innerHTML = `
+                        <button class="verse-tool copy-verse" title="${getCurrentLanguage().copyVerse}">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <button class="verse-tool bookmark-verse" title="${getCurrentLanguage().bookmarkVerse}">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </button>
+                    `;
+                    wrapper.appendChild(toolsDiv);
+                    
+                    // Wrap verse text in p tag if not already
+                    const verseContent = verse.innerHTML;
+                    if (!verseContent.includes('<p>')) {
+                        const reference = verse.querySelector('.verse-reference');
+                        if (reference) {
+                            const textWithoutReference = verseContent.replace(reference.outerHTML, '');
+                            verse.innerHTML = `<p>${textWithoutReference}</p>${reference.outerHTML}`;
+                        } else {
+                            verse.innerHTML = `<p>${verseContent}</p>`;
+                        }
+                    }
+                    
+                    // Add animation with delay based on index
+                    verse.style.animation = `slideFadeIn 0.5s ease ${index * 0.2}s backwards`;
+                    
+                    // Add copy functionality
+                    const copyBtn = wrapper.querySelector('.copy-verse');
+                    if (copyBtn) {
+                        copyBtn.addEventListener('click', function() {
+                            // Get verse text
+                            const verseText = verse.textContent;
+                            
+                            // Copy to clipboard
+                            navigator.clipboard.writeText(verseText).then(function() {
+                                // Show toast
+                                showToast(getCurrentLanguage().copiedMessage);
+                            });
+                        });
+                    }
+                    
+                    // Add bookmark functionality
+                    const bookmarkBtn = wrapper.querySelector('.bookmark-verse');
+                    if (bookmarkBtn) {
+                        bookmarkBtn.addEventListener('click', function() {
+                            this.classList.toggle('active');
+                            
+                            // Show toast
+                            if (this.classList.contains('active')) {
+                                showToast(getCurrentLanguage().bookmarkedMessage);
+                            } else {
+                                showToast(getCurrentLanguage().unbookmarkedMessage);
+                            }
+                        });
+                    }
+                });
+                
+                // Highlight keywords in non-verse paragraphs
+                const paragraphs = document.querySelectorAll('.answer-content > p:not(.bible-verse)');
+                paragraphs.forEach(paragraph => {
+                    // List of keywords to highlight (based on the assumption of Bible topics)
+                    const keywords = [
+                        'love', 'faith', 'hope', 'charity', 'forgiveness', 'grace', 'mercy', 'salvation',
+                        'amor', 'fe', 'esperanza', 'caridad', 'perdón', 'gracia', 'misericordia', 'salvación'
+                    ];
+                    
+                    let html = paragraph.innerHTML;
+                    keywords.forEach(keyword => {
+                        const regex = new RegExp(`\\b(${keyword})\\b`, 'gi');
+                        html = html.replace(regex, '<span class="keyword">$1</span>');
+                    });
+                    
+                    paragraph.innerHTML = html;
+                });
+            }
+            
+            // Create confetti celebration
+            function createConfetti() {
+                const container = document.getElementById('confetti-container');
+                container.innerHTML = ''; // Clear any existing confetti
+                
+                const colors = [
+                    '#4e8ed5', // Water blue
+                    '#66a6ff', // Light blue
+                    '#77c1fc', // Sky blue
+                    '#d5b34e', // Gold
+                    '#ffffff'  // White
+                ];
+                
+                // Create 50 confetti pieces
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random position
+                    const posX = Math.random() * 100;
+                    confetti.style.left = `${posX}%`;
+                    
+                    // Random size
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    // Random color
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    confetti.style.backgroundColor = colors[colorIndex];
+                    
+                    // Random shape
+                    const shapes = ['square', 'circle', 'triangle'];
+                    const shapeIndex = Math.floor(Math.random() * shapes.length);
+                    if (shapes[shapeIndex] === 'circle') {
+                        confetti.style.borderRadius = '50%';
+                    } else if (shapes[shapeIndex] === 'triangle') {
+                        confetti.style.width = '0';
+                        confetti.style.height = '0';
+                        confetti.style.backgroundColor = 'transparent';
+                        confetti.style.borderLeft = `${size/2}px solid transparent`;
+                        confetti.style.borderRight = `${size/2}px solid transparent`;
+                        confetti.style.borderBottom = `${size}px solid ${colors[colorIndex]}`;
+                    }
+                    
+                    // Random rotation
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    // Animation duration and delay
+                    const duration = Math.random() * 3 + 2;
+                    const delay = Math.random() * 2;
+                    confetti.style.animation = `confettiFall ${duration}s ${delay}s linear forwards`;
+                    
+                    container.appendChild(confetti);
+                }
+                
+                // Remove confetti after they fall
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
+            }
+            
+            // Create floating particles
+            function createParticles() {
+                const particlesContainer = document.querySelector('.particles-container');
+                const particleCount = 20; // Reduced from 30
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // Random size
+                    const size = Math.random() * 3 + 1;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // Random position
+                    const posX = Math.random() * 100;
+                    const posY = Math.random() * 100 + 100; // Start below viewport
+                    particle.style.left = `${posX}%`;
+                    particle.style.top = `${posY}%`;
+                    
+                    // Random opacity and color
+                    particle.style.opacity = Math.random() * 0.5 + 0.1;
+                    
+                    // Choose between blue and gold
+                    const colors = [
+                        'rgba(78, 142, 213, 0.7)', // Blue
+                        'rgba(213, 179, 78, 0.7)'  // Gold
+                    ];
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    particle.style.backgroundColor = colors[colorIndex];
+                    
+                    // Animation duration
+                    const duration = Math.random() * 20 + 15;
+                    particle.style.animation = `particleFloat ${duration}s linear infinite`;
+                    
+                    // Random delay
+                    const delay = Math.random() * 15;
+                    particle.style.animationDelay = `-${delay}s`;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            // Initialize Accessibility Panel
+            function initA11y() {
+                const a11yToggle = document.getElementById('a11y-toggle');
+                const a11yOptions = document.getElementById('a11y-options');
+                const highContrastCheckbox = document.getElementById('high-contrast');
+                const focusModeCheckbox = document.getElementById('focus-mode');
+                const reduceMotionCheckbox = document.getElementById('reduce-motion');
+                const textToSpeechCheckbox = document.getElementById('text-to-speech');
+                
+                // Toggle a11y panel
+                a11yToggle.addEventListener('click', function() {
+                    a11yOptions.classList.toggle('show');
+                });
+                
+                // High contrast mode
+                highContrastCheckbox.addEventListener('change', function() {
+                    document.body.classList.toggle('high-contrast', this.checked);
+                });
+                
+                // Focus mode
+                focusModeCheckbox.addEventListener('change', function() {
+                    document.body.classList.toggle('focus-mode', this.checked);
+                });
+                
+                // Reduce motion
+                reduceMotionCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        document.body.classList.add('reduce-motion');
+                        // Stop all animations
+                        document.querySelectorAll('.particle').forEach(el => {
+                            el.style.display = 'none';
+                        });
+                    } else {
+                        document.body.classList.remove('reduce-motion');
+                        // Restore animations
+                        document.querySelectorAll('.particle').forEach(el => {
+                            el.style.display = 'block';
+                        });
+                    }
+                });
+                
+                // Close a11y panel when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!a11yToggle.contains(e.target) && !a11yOptions.contains(e.target)) {
+                        a11yOptions.classList.remove('show');
+                    }
+                });
+            }
+            
+            // Initialize Language Toggle
+            function initLanguageToggle() {
+                const langButtons = document.querySelectorAll('.lang-btn');
+                const questionLabel = document.getElementById('question-label');
+                const submitText = document.getElementById('submit-text');
+                const initialText = document.getElementById('initial-text');
+                const placeholder = document.getElementById('bibleQuestion');
+                
+                langButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Remove active class from all buttons
+                        langButtons.forEach(b => b.classList.remove('active'));
+                        
+                        // Add active class to clicked button
+                        this.classList.add('active');
+                        
+                        // Update text based on language
+                        updateLanguageText();
+                    });
+                });
+                
+                // Initial text update
+                updateLanguageText();
+                
+                function updateLanguageText() {
+                    const lang = getCurrentLanguage();
+                    
+                    // Update interface text
+                    questionLabel.textContent = lang.yourQuestion;
+                    submitText.textContent = lang.askQuestion;
+                    initialText.textContent = lang.initialText;
+                    placeholder.placeholder = lang.placeholder;
+                    
+                    // Update any visible answer content
+                    const answerTitle = document.querySelector('.bible-answer h3');
+                    if (answerTitle) {
+                        answerTitle.textContent = lang.answer;
+                    }
+                }
+            }
+            
+            // Get current language texts
+            function getCurrentLanguage() {
+                const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
+                
+                if (currentLang === 'es-MX') {
+                    return {
+                        yourQuestion: 'Tu Pregunta',
+                        askQuestion: 'Hacer Pregunta',
+                        initialText: 'Tus respuestas bíblicas aparecerán aquí',
+                        placeholder: 'Ejemplo: ¿Qué dice la Biblia sobre el perdón?',
+                        answer: 'Respuesta:',
+                        searching: 'Buscando sabiduría bíblica...',
+                        related: 'Preguntas Relacionadas',
+                        relatedQuestion1: '¿Qué dice sobre la fe?',
+                        relatedQuestion2: '¿Cómo puedo orar mejor?',
+                        relatedQuestion3: '¿Qué dice sobre la salvación?',
+                        speak: 'Escuchar',
+                        save: 'Guardar',
+                        share: 'Compartir',
+                        errorTitle: 'Lo sentimos, hubo un error',
+                        errorMessage: 'No pudimos procesar tu pregunta en este momento. Por favor, inténtalo más tarde.',
+                        copiedMessage: '¡Versículo copiado al portapapeles!',
+                        savedMessage: '¡Respuesta guardada!',
+                        sharedMessage: '¡Respuesta compartida!',
+                        bookmarkedMessage: '¡Versículo guardado!',
+                        unbookmarkedMessage: 'Versículo eliminado de guardados',
+                        copyVerse: 'Copiar versículo',
+                        bookmarkVerse: 'Guardar versículo'
+                    };
+                } else {
+                    return {
+                        yourQuestion: 'Your Question',
+                        askQuestion: 'Ask Question',
+                        initialText: 'Your Bible answers will appear here',
+                        placeholder: 'Example: What does the Bible say about forgiveness?',
+                        answer: 'Answer:',
+                        searching: 'Searching for biblical wisdom...',
+                        related: 'Related Questions',
+                        relatedQuestion1: 'What does it say about faith?',
+                        relatedQuestion2: 'How can I pray better?',
+                        relatedQuestion3: 'What does it say about salvation?',
+                        speak: 'Listen',
+                        save: 'Save',
+                        share: 'Share',
+                        errorTitle: 'Sorry, there was an error',
+                        errorMessage: 'We couldn\'t process your question at this time. Please try again later.',
+                        copiedMessage: 'Verse copied to clipboard!',
+                        savedMessage: 'Answer saved!',
+                        sharedMessage: 'Answer shared!',
+                        bookmarkedMessage: 'Verse bookmarked!',
+                        unbookmarkedMessage: 'Verse removed from bookmarks',
+                        copyVerse: 'Copy verse',
+                        bookmarkVerse: 'Bookmark verse'
+                    };
+                }
+            }
+            
+            // Create typing indicator function
+            const createTypingEffect = (element, text, speed = 20) => {
+                let i = 0;
+                element.textContent = '';
+                
+                return new Promise((resolve) => {
+                    const typing = setInterval(() => {
+                        if (i < text.length) {
+                            element.textContent += text.charAt(i);
+                            i++;
+                        } else {
+                            clearInterval(typing);
+                            resolve();
+                        }
+                    }, speed);
+                });
+            };
+            
+            // Add custom styles for language toggle
+            const style = document.createElement('style');
+            style.textContent = `
+                .language-toggle {
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                    margin-bottom: 2rem;
+                }
+                
+                .lang-btn {
+                    background: rgba(18, 18, 18, 0.7);
+                    color: var(--text-secondary);
+                    border: 1px solid var(--border-color);
+                    border-radius: 30px;
+                    padding: 8px 16px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+                
+                .lang-btn.active {
+                    background: var(--water-blue);
+                    color: white;
+                    border-color: var(--water-blue);
+                    box-shadow: 0 4px 15px rgba(78, 142, 213, 0.3);
+                }
+                
+                .lang-btn:hover:not(.active) {
+                    background: rgba(78, 142, 213, 0.1);
+                    border-color: var(--water-blue);
+                }
+                
+                .lang-emoji {
+                    font-size: 1.2rem;
+                }
+                
+                @keyframes ripple {
+                    to {
+                        transform: scale(3);
+                        opacity: 0;
+                    }
+                }
+                
+                @media (max-width: 576px) {
+                    .lang-btn {
+                        padding: 6px 12px;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .language-toggle {
+                        margin-bottom: 1.5rem;
+                    }
+                }
+                
+                .verse-tool.active {
+                    background: var(--water-blue);
+                    color: white;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Optional: Preload animation for placeholder
+            setTimeout(() => {
+                const placeholder = bibleQuestion.getAttribute('placeholder');
+                bibleQuestion.setAttribute('placeholder', '');
+                
+                let placeholderElement = document.createElement('div');
+                placeholderElement.style.position = 'absolute';
+                placeholderElement.style.color = 'rgba(160, 160, 160, 0.6)';
+                placeholderElement.style.pointerEvents = 'none';
+                placeholderElement.style.left = '1.2rem';
+                placeholderElement.style.top = '1.2rem';
+                
+                // Insert after textarea
+                bibleQuestion.parentNode.insertBefore(placeholderElement, bibleQuestion.nextSibling);
+                
+                // Only show if textarea is empty and not focused
+                if (!bibleQuestion.value && document.activeElement !== bibleQuestion) {
+                    createTypingEffect(placeholderElement, placeholder, 50);
+                }
+                
+                // Handle focus events for placeholder
+                bibleQuestion.addEventListener('focus', () => {
+                    placeholderElement.style.display = 'none';
+                });
+                
+                bibleQuestion.addEventListener('blur', () => {
+                    if (!bibleQuestion.value) {
+                        placeholderElement.style.display = 'block';
+                    }
+                });
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
+                <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +904,12 @@
             --living-gray: #8a8a8a;
             --water-blue: #4e8ed5;
             --water-blue-dark: #3678c5;
+            --water-light: #66a6ff;
             --tech-black: #121212;
             --dark-bg: #161616;
             --darker-bg: #0c0c0c;
             --card-bg: #232323;
+            --card-bg-lighter: #2a2a2a;
             --text-primary: #e8e8e8;
             --text-secondary: #a0a0a0;
             --light-accent: rgba(78, 142, 213, 0.15);
@@ -22,6 +918,7 @@
             --accent-gold: #d5b34e;
             --accent-purple: #9c4ed5;
             --error-color: #e57373;
+            --success-color: #81c784;
             --transition-speed: 0.3s;
         }
         
@@ -43,8 +940,16 @@
             font-display: swap;
         }
         
+        @font-face {
+            font-family: 'ModernSans';
+            src: url('https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXo.woff2') format('woff2');
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+        }
+        
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'ModernSans', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background-color: var(--dark-bg);
@@ -56,10 +961,58 @@
                 radial-gradient(circle at 80% 70%, rgba(156, 78, 213, 0.03) 0%, transparent 50%);
         }
         
+        body::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        body::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        
+        body::-webkit-scrollbar-thumb {
+            background-color: rgba(78, 142, 213, 0.3);
+            border-radius: 6px;
+            border: 2px solid var(--dark-bg);
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Accessibility Focus Styles */
+        a:focus, button:focus, input:focus, textarea:focus, [tabindex]:focus {
+            outline: 3px solid var(--water-blue);
+            outline-offset: 2px;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            padding: 8px 15px;
+            background-color: var(--water-blue);
+            color: white;
+            z-index: 9999;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        /* Wave Divider */
+        .wave-divider {
+            position: absolute;
+            width: 100%;
+            height: 50px;
+            bottom: -1px;
+            left: 0;
+            fill: var(--dark-bg);
+            z-index: 10;
         }
         
         /* Header for Bible Q&A */
@@ -88,6 +1041,995 @@
         .bible-header::before {
             content: '';
             position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: all 0.6s ease;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: buttonGlow 2s infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        @keyframes buttonGlow {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #4289d0, #3272be);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(78, 142, 213, 0.4),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover::after {
+            opacity: 1;
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(78, 142, 213, 0.3);
+        }
+        
+        .btn-text {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-loading {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+        
+        .action-btn {
+            background: rgba(18, 18, 18, 0.7);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: rgba(18, 18, 18, 0.9);
+            color: var(--text-primary);
+            border-color: var(--water-blue);
+        }
+        
+        .action-btn i {
+            font-size: 16px;
+        }
+        
+        /* Pulse effect for submit button */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(78, 142, 213, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(78, 142, 213, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(78, 142, 213, 0);
+            }
+        }
+        
+        /* Results Card */
+        .bible-qa-results {
+            background: linear-gradient(145deg, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, 0.9));
+            border-radius: 12px;
+            padding: 2.4rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.05),
+                        inset 0 -2px 2px rgba(0, 0, 0, 0.1);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            animation: cardAppear 0.6s ease-out 0.9s backwards;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--water-blue) var(--card-bg);
+        }
+        
+        .bible-qa-results::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .bible-qa-results::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .bible-qa-results::-webkit-scrollbar-thumb {
+            background-color: rgba(78, 142, 213, 0.3);
+            border-radius: 4px;
+        }
+        
+        .bible-qa-results::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--water-blue), transparent);
+            opacity: 0.5;
+        }
+        
+        .bible-qa-results::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 40%;
+            background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%234e8ed5' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: 0;
+        }
+        
+        /* Initial State */
+        .initial-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-secondary);
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        .scripture-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+            animation: float 5s ease-in-out infinite;
+            color: var(--water-blue);
+            position: relative;
+        }
+        
+        .scripture-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: radial-gradient(ellipse, rgba(78, 142, 213, 0.3) 0%, rgba(78, 142, 213, 0) 70%);
+            bottom: -15px;
+            left: 0;
+            border-radius: 50%;
+            animation: shadowPulse 5s ease-in-out infinite;
+        }
+        
+        /* Bible Answer */
+        .bible-answer {
+            flex: 1;
+            animation: fadeIn 0.8s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .bible-answer h3 {
+            color: var(--water-blue);
+            margin-bottom: 1.2rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .bible-answer h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--water-blue), transparent);
+        }
+        
+        .answer-content {
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        .answer-content p:first-letter {
+            font-size: 1.7em;
+            font-weight: 700;
+            color: var(--water-blue);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Highlighted Keywords */
+        .keyword {
+            color: var(--water-blue);
+            font-weight: 500;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .keyword::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(78, 142, 213, 0.3);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: bottom right;
+        }
+        
+        .keyword:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        
+        /* Bible verse styling */
+        .bible-verse {
+            background: linear-gradient(to right, rgba(78, 142, 213, 0.08), rgba(78, 142, 213, 0.05));
+            border-left: 4px solid var(--water-blue);
+            padding: 1.5rem 1.8rem;
+            margin: 1.8rem 0;
+            font-style: italic;
+            line-height: 1.8;
+            border-radius: 0 8px 8px 0;
+            animation: slideFadeIn 0.5s ease;
+            position: relative;
+            font-family: 'Scripture', serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .bible-verse::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 3rem;
+            color: rgba(78, 142, 213, 0.1);
+            font-family: serif;
+            z-index: 0;
+        }
+        
+        .bible-verse::after {
+            content: '"';
+            position: absolute;
+            bottom: -10px;
+            right: 15px;
+            font-size: 3rem;
+            color: rgba(78, 142, 213, 0.1);
+            font-family: serif;
+            z-index: 0;
+        }
+        
+        .bible-verse p {
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .verse-wrapper {
+            position: relative;
+        }
+        
+        .verse-tools {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .verse-wrapper:hover .verse-tools {
+            opacity: 1;
+        }
+        
+        .verse-tool {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(3px);
+            font-size: 14px;
+        }
+        
+        .verse-tool:hover {
+            background: rgba(78, 142, 213, 0.3);
+            color: var(--text-primary);
+        }
+        
+        .verse-reference {
+            display: block;
+            text-align: right;
+            margin-top: 0.9rem;
+            font-style: normal;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            position: relative;
+            padding-top: 8px;
+        }
+        
+        .verse-reference::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 1px;
+            background-color: rgba(78, 142, 213, 0.3);
+        }
+        
+        .verse-reference strong {
+            color: var(--water-blue);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        
+        .verse-reference strong::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: rgba(78, 142, 213, 0.3);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: right;
+        }
+        
+        .verse-reference:hover strong::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Success Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast-icon {
+            background: var(--water-blue);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Loading animation */
+        .loading-dots {
+            display: inline-flex;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            margin: 0 4px;
+            border-radius: 50%;
+            background-color: white;
+            animation: dot-pulse 1.5s infinite ease-in-out;
+        }
+        
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes dot-pulse {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        /* Advanced loading animation */
+        .advanced-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem auto;
+        }
+        
+        .loader-bible {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+        
+        .loader-bible::before,
+        .loader-bible::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background: conic-gradient(from 0deg, transparent 0%, var(--water-blue) 100%);
+            animation: rotateConic 2s linear infinite;
+        }
+        
+        .loader-bible::after {
+            background: conic-gradient(from 180deg, transparent 0%, var(--water-blue) 100%);
+            animation-delay: -1s;
+        }
+        
+        .loader-bible span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+        
+        @keyframes rotateConic {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Confetti Animation */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--water-blue);
+            opacity: 0.8;
+            animation: confettiFall linear forwards;
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Related Questions */
+        .related-questions {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            animation: fadeIn 0.8s ease 0.5s backwards;
+        }
+        
+        .related-questions h4 {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .question-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .question-chip {
+            background: rgba(18, 18, 18, 0.7);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 6px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .question-chip:hover {
+            background: rgba(78, 142, 213, 0.1);
+            color: var(--water-blue);
+            border-color: var(--water-blue);
+        }
+        
+        /* Footer */
+        .bible-footer {
+            background-color: var(--tech-black);
+            color: var(--text-secondary);
+            padding: 1.7rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+            animation: footerAppear 1s ease-out 1.2s backwards;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bible-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--water-blue), transparent);
+            opacity: 0.3;
+        }
+        
+        @keyframes footerAppear {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        /* Accessibility Features */
+        .a11y-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9000;
+        }
+        
+        .a11y-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .a11y-toggle:hover {
+            background: var(--water-blue);
+        }
+        
+        .a11y-options {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+        
+        .a11y-options.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .a11y-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .a11y-option:last-child {
+            margin-bottom: 0;
+        }
+        
+        .a11y-option label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .a11y-switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .a11y-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .3s;
+            border-radius: 20px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--water-blue);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        
+        /* Page transition effect */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--tech-black);
+            z-index: 9999;
+            pointer-events: none;
+            animation: pageTransition 1.2s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+        }
+        
+        @keyframes pageTransition {
+            0% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+            50% {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+            50.1% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+            100% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+        }
+        
+        /* Error state */
+        .error {
+            color: var(--error-color);
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid rgba(229, 115, 115, 0.3);
+            border-radius: 8px;
+            background-color: rgba(229, 115, 115, 0.1);
+        }
+        
+        /* Responsive design with animations */
+        @media (max-width: 992px) {
+            .bible-qa-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .bible-qa-results {
+                min-height: 250px;
+            }
+            
+            .section-heading h1 {
+                font-size: 2rem;
+            }
+            
+            .section-heading h1::before,
+            .section-heading h1::after {
+                display: none;
+            }
+            
+            .logo-text {
+                font-size: 2.2rem;
+            }
+            
+            .theme-controls,
+            .color-palette {
+                right: 10px;
+            }
+            
+            .toast {
+                right: 10px;
+                bottom: 10px;
+                left: 10px;
+                width: calc(100% - 20px);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .bible-header {
+                padding: 2rem 0;
+            }
+            
+            .section-heading h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-heading p {
+                font-size: 1rem;
+            }
+            
+            .bible-qa-form, .bible-qa-results {
+                padding: 1.8rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .bible-verse {
+                padding: 1.2rem 1.5rem;
+            }
+            
+            .bible-verse::before,
+            .bible-verse::after {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .action-btn {
+                flex: 1;
+                justify-content: center;
+                min-width: 100px;
+            }
+            
+            .input-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .input-options {
+                margin-top: 10px;
+            }
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .animate-on-scroll {
+                opacity: 1;
+                transform: none;
+            }
+            
+            .bible-icon,
+            .scripture-icon {
+                animation: none;
+            }
+            
+            .pulse {
+                animation: none;
+                box-shadow: none;
+            }
+            
+            .confetti {
+                display: none;
+            }
+            
+            .particle {
+                display: none;
+            }
+        }
+        
+        /* Focus Mode */
+        .focus-mode .bible-verse {
+            background: linear-gradient(to right, rgba(78, 142, 213, 0.1), rgba(78, 142, 213, 0.07));
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .focus-mode .bible-verse p {
+            font-size: 1.1rem;
+        }
+        
+        .focus-mode .answer-content > p:not(.bible-verse) {
+            opacity: 0.6;
+        }
+        
+        /* High Contrast Mode */
+        .high-contrast {
+            --water-blue: #4dabff;
+            --water-blue-dark: #4dabff;
+            --accent-gold: #ffdd4d;
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --dark-bg: #000000;
+            --card-bg: #000000;
+            --border-color: #ffffff;
+        }
+        
+        .high-contrast .bible-qa-form,
+        .high-contrast .bible-qa-results {
+            background: #000000;
+            border: 2px solid white;
+        }
+        
+        .high-contrast .bible-verse {
+            background: #000000;
+            border-left: 4px solid #4dabff;
+            border: 2px solid white;
+        }
+        
+        .scroll-animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Transition Effect -->
+    <div class="page-transition"></div>
+    
+    <!-- Particles Background -->
+    <div class="particles-container" id="particles-js"></div>
+    
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="bible-header">
+        <div class="container">
+            <div class="logo-container">
+                <div class="bible-icon">📖</div>
+                <div class="logo-text">LIVING WATER TECH</div>
+            </div>
+        </div>
+        
+        <!-- Wave Divider -->
+        <svg class="wave-divider" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-
             top: 0;
             left: 0;
             right: 0;
@@ -187,6 +2129,107 @@
             }
         }
         
+        /* Theme Toggle */
+        .theme-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .control-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .control-btn:hover {
+            background: rgba(78, 142, 213, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .control-btn:active {
+            transform: translateY(0);
+        }
+        
+        .control-btn i {
+            font-size: 18px;
+        }
+        
+        /* Color Palette */
+        .color-palette {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+            transform: translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .color-palette.visible {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.blue {
+            background: linear-gradient(135deg, #4e8ed5, #3678c5);
+        }
+        
+        .color-option.purple {
+            background: linear-gradient(135deg, #9c4ed5, #7a3da9);
+        }
+        
+        .color-option.teal {
+            background: linear-gradient(135deg, #4ecdc4, #2fa69e);
+        }
+        
+        .color-option.gold {
+            background: linear-gradient(135deg, #d5b34e, #c09d38);
+        }
+        
+        .color-option.green {
+            background: linear-gradient(135deg, #66bb6a, #4caf50);
+        }
+        
         /* Particles */
         .particles-container {
             position: fixed;
@@ -224,6 +2267,18 @@
                 transform: translateY(-100vh) translateX(20px);
                 opacity: 0;
             }
+        }
+        
+        /* Interactive Background */
+        .interactive-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
         }
         
         /* Bible Q&A Section */
@@ -417,6 +2472,81 @@
             }
         }
         
+        /* Form Controls & Input Area */
+        .input-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+        
+        .input-controls label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .input-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .input-option {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-secondary);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .input-option:hover {
+            background: rgba(78, 142, 213, 0.2);
+            color: var(--text-primary);
+        }
+        
+        .input-option:active {
+            transform: scale(0.95);
+        }
+        
+        .input-option.active {
+            background: rgba(78, 142, 213, 0.3);
+            color: var(--water-blue);
+        }
+        
+        .tooltip {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        
+        .input-option:hover .tooltip {
+            opacity: 1;
+        }
+        
         .form-group {
             margin-bottom: 1.8rem;
             position: relative;
@@ -476,6 +2606,62 @@
             background-color: rgba(18, 18, 18, 0.9);
         }
         
+        /* Voice Input Animation */
+        .voice-animation {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+        
+        .voice-wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(78, 142, 213, 0.5);
+            opacity: 0;
+            transform: scale(1);
+            animation: voiceWave 2s infinite;
+        }
+        
+        .voice-wave:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        
+        .voice-wave:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes voiceWave {
+            0% {
+                opacity: 0.8;
+                transform: scale(0.1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2);
+            }
+        }
+        
+        .voice-icon {
+            position: relative;
+            z-index: 1;
+            color: var(--water-blue);
+            font-size: 18px;
+        }
+        
+        .recording .voice-icon {
+            color: #ff5252;
+            animation: pulse 1s infinite;
+        }
+        
+        /* Button Styles */
         .btn {
             display: inline-block;
             padding: 0.9rem 1.8rem;
@@ -497,1031 +2683,3 @@
         .btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: all 0.6s ease;
-        }
-        
-        .btn::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            animation: buttonGlow 2s infinite;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        @keyframes buttonGlow {
-            0% {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            50% {
-                opacity: 0.5;
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-        }
-        
-        .btn:hover {
-            background: linear-gradient(135deg, #4289d0, #3272be);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(78, 142, 213, 0.4),
-                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        .btn:hover::after {
-            opacity: 1;
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 10px rgba(78, 142, 213, 0.3);
-        }
-        
-        .btn-text {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .btn-loading {
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Pulse effect for submit button */
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(78, 142, 213, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(78, 142, 213, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(78, 142, 213, 0);
-            }
-        }
-        
-        .bible-qa-results {
-            background: linear-gradient(145deg, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, 0.9));
-            border-radius: 12px;
-            padding: 2.4rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2),
-                        inset 0 1px 1px rgba(255, 255, 255, 0.05),
-                        inset 0 -2px 2px rgba(0, 0, 0, 0.1);
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            animation: cardAppear 0.6s ease-out 0.9s backwards;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-            scrollbar-width: thin;
-            scrollbar-color: var(--water-blue) var(--card-bg);
-        }
-        
-        .bible-qa-results::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .bible-qa-results::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .bible-qa-results::-webkit-scrollbar-thumb {
-            background-color: rgba(78, 142, 213, 0.3);
-            border-radius: 4px;
-        }
-        
-        .bible-qa-results::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            left: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--water-blue), transparent);
-            opacity: 0.5;
-        }
-        
-        .bible-qa-results::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 40%;
-            height: 40%;
-            background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%234e8ed5' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-            z-index: 0;
-        }
-        
-        .bible-qa-results:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3),
-                        inset 0 1px 1px rgba(255, 255, 255, 0.07),
-                        inset 0 -2px 2px rgba(0, 0, 0, 0.1);
-        }
-        
-        .initial-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: var(--text-secondary);
-            text-align: center;
-            animation: fadeIn 0.8s ease;
-            position: relative;
-            z-index: 1;
-        }
-        
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        
-        .scripture-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.7;
-            animation: float 5s ease-in-out infinite;
-            color: var(--water-blue);
-            position: relative;
-        }
-        
-        .scripture-icon::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 10px;
-            background: radial-gradient(ellipse, rgba(78, 142, 213, 0.3) 0%, rgba(78, 142, 213, 0) 70%);
-            bottom: -15px;
-            left: 0;
-            border-radius: 50%;
-            animation: shadowPulse 5s ease-in-out infinite;
-        }
-        
-        .bible-answer {
-            flex: 1;
-            animation: fadeIn 0.8s ease;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .bible-answer h3 {
-            color: var(--water-blue);
-            margin-bottom: 1.2rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            position: relative;
-            display: inline-block;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        .bible-answer h3::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--water-blue), transparent);
-        }
-        
-        .answer-content {
-            line-height: 1.8;
-            position: relative;
-        }
-        
-        /* Bible verse styling */
-        .bible-verse {
-            background: linear-gradient(to right, rgba(78, 142, 213, 0.08), rgba(78, 142, 213, 0.05));
-            border-left: 4px solid var(--water-blue);
-            padding: 1.5rem 1.8rem;
-            margin: 1.8rem 0;
-            font-style: italic;
-            line-height: 1.8;
-            border-radius: 0 8px 8px 0;
-            animation: slideFadeIn 0.5s ease;
-            position: relative;
-            font-family: 'Scripture', serif;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .bible-verse::before {
-            content: '"';
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            font-size: 3rem;
-            color: rgba(78, 142, 213, 0.1);
-            font-family: serif;
-            z-index: 0;
-        }
-        
-        .bible-verse::after {
-            content: '"';
-            position: absolute;
-            bottom: -10px;
-            right: 15px;
-            font-size: 3rem;
-            color: rgba(78, 142, 213, 0.1);
-            font-family: serif;
-            z-index: 0;
-        }
-        
-        .bible-verse p {
-            position: relative;
-            z-index: 1;
-        }
-        
-        @keyframes slideFadeIn {
-            0% {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        .verse-reference {
-            display: block;
-            text-align: right;
-            margin-top: 0.9rem;
-            font-style: normal;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            position: relative;
-            padding-top: 8px;
-        }
-        
-        .verse-reference::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 40px;
-            height: 1px;
-            background-color: rgba(78, 142, 213, 0.3);
-        }
-        
-        .verse-reference strong {
-            color: var(--water-blue);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            position: relative;
-        }
-        
-        .verse-reference strong::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background-color: rgba(78, 142, 213, 0.3);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-            transform-origin: right;
-        }
-        
-        .verse-reference:hover strong::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-        
-        /* Loading animation */
-        .loading-dots {
-            display: inline-flex;
-        }
-        
-        .dot {
-            width: 8px;
-            height: 8px;
-            margin: 0 4px;
-            border-radius: 50%;
-            background-color: white;
-            animation: dot-pulse 1.5s infinite ease-in-out;
-        }
-        
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes dot-pulse {
-            0%, 100% {
-                transform: scale(0.8);
-                opacity: 0.6;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-        }
-        
-        /* Advanced loading animation */
-        .advanced-loader {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 2rem auto;
-        }
-        
-        .loader-bible {
-            width: 60px;
-            height: 60px;
-            position: relative;
-        }
-        
-        .loader-bible::before,
-        .loader-bible::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-            background: conic-gradient(from 0deg, transparent 0%, var(--water-blue) 100%);
-            animation: rotateConic 2s linear infinite;
-        }
-        
-        .loader-bible::after {
-            background: conic-gradient(from 180deg, transparent 0%, var(--accent-purple) 100%);
-            animation-delay: -1s;
-        }
-        
-        .loader-bible span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.2rem;
-            color: var(--text-primary);
-        }
-        
-        @keyframes rotateConic {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        
-        /* Footer */
-        .bible-footer {
-            background-color: var(--tech-black);
-            color: var(--text-secondary);
-            padding: 1.7rem 0;
-            text-align: center;
-            font-size: 0.9rem;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
-            animation: footerAppear 1s ease-out 1.2s backwards;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .bible-footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--water-blue), transparent);
-            opacity: 0.3;
-        }
-        
-        @keyframes footerAppear {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        
-        /* Page transition effect */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--tech-black);
-            z-index: 9999;
-            pointer-events: none;
-            animation: pageTransition 1.2s cubic-bezier(0.76, 0, 0.24, 1) forwards;
-        }
-        
-        @keyframes pageTransition {
-            0% {
-                transform: scaleY(1);
-                transform-origin: top;
-            }
-            50% {
-                transform: scaleY(0);
-                transform-origin: top;
-            }
-            50.1% {
-                transform: scaleY(0);
-                transform-origin: bottom;
-            }
-            100% {
-                transform: scaleY(0);
-                transform-origin: bottom;
-            }
-        }
-        
-        /* Error state */
-        .error {
-            color: var(--error-color);
-        }
-        
-        .error-container {
-            text-align: center;
-            padding: 1rem;
-            border: 1px solid rgba(229, 115, 115, 0.3);
-            border-radius: 8px;
-            background-color: rgba(229, 115, 115, 0.1);
-        }
-        
-        /* Responsive design with animations */
-        @media (max-width: 992px) {
-            .bible-qa-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .bible-qa-results {
-                min-height: 250px;
-            }
-            
-            .section-heading h1 {
-                font-size: 2rem;
-            }
-            
-            .section-heading h1::before,
-            .section-heading h1::after {
-                display: none;
-            }
-            
-            .bible-qa-form, .bible-qa-results {
-                animation-delay: 0.5s;
-            }
-            
-            .logo-text {
-                font-size: 2.2rem;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .bible-header {
-                padding: 2rem 0;
-            }
-            
-            .section-heading h1 {
-                font-size: 1.8rem;
-            }
-            
-            .section-heading p {
-                font-size: 1rem;
-            }
-            
-            .bible-qa-form, .bible-qa-results {
-                padding: 1.8rem;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .bible-verse {
-                padding: 1.2rem 1.5rem;
-            }
-            
-            .bible-verse::before,
-            .bible-verse::after {
-                font-size: 2rem;
-            }
-        }
-        
-        /* Subtle scroll animation for content */
-        .scroll-animate {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s, transform 0.8s;
-        }
-        
-        .scroll-animate.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Card hover effect */
-        .hover-card {
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-                        box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            will-change: transform, box-shadow;
-        }
-        
-        .hover-card-content {
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            will-change: transform;
-        }
-    </style>
-</head>
-<body>
-    <!-- Page Transition Effect -->
-    <div class="page-transition"></div>
-    
-    <!-- Particles Background -->
-    <div class="particles-container" id="particles-js"></div>
-
-    <!-- Header -->
-    <header class="bible-header">
-        <div class="container">
-            <div class="logo-container">
-                <div class="bible-icon">📖</div>
-                <div class="logo-text">LIVING WATER TECH</div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Bible Q&A Section -->
-    <section class="bible-qa">
-        <div class="container">
-            <div class="section-heading">
-                <h1>Ask a Bible Question</h1>
-                <p>Have questions about Scripture? Our tool can help you find biblical answers with relevant verse references.</p>
-            </div>
-
-            <div class="bible-qa-container">
-                <div class="bible-qa-form scroll-animate hover-card">
-                    <form id="bibleQuestionForm">
-                        <div class="form-group">
-                            <label for="bibleQuestion">Your Question</label>
-                            <textarea id="bibleQuestion" class="form-control" placeholder="Example: What does the Bible say about forgiveness?" required></textarea>
-                        </div>
-                        <button type="submit" class="btn pulse" id="askButton">
-                            <span class="btn-text">Ask Question</span>
-                            <span class="btn-loading" style="display: none;">
-                                <span class="loading-dots">
-                                    <span class="dot"></span>
-                                    <span class="dot"></span>
-                                    <span class="dot"></span>
-                                </span>
-                            </span>
-                        </button>
-                    </form>
-                </div>
-                <div class="bible-qa-results scroll-animate hover-card" id="bibleAnswerContainer">
-                    <div class="initial-state">
-                        <div class="scripture-icon">📖</div>
-                        <p>Your Bible answers will appear here</p>
-                    </div>
-                    <!-- Answer will be inserted here -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bible-footer">
-        <div class="container">
-            <p>&copy; 2025 Living Water Tech. Empowering faith through innovation.</p>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create particles
-            createParticles();
-            
-            // Implement 3D card hover effect
-            initHoverEffect();
-            
-            // Reveal elements on scroll
-            const scrollElements = document.querySelectorAll('.scroll-animate');
-            
-            const elementInView = (el, dividend = 1) => {
-                const elementTop = el.getBoundingClientRect().top;
-                return (
-                    elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
-                );
-            };
-            
-            const displayScrollElement = (element) => {
-                element.classList.add('visible');
-            };
-            
-            const handleScrollAnimation = () => {
-                scrollElements.forEach((el) => {
-                    if (elementInView(el, 1.25)) {
-                        displayScrollElement(el);
-                    }
-                });
-            };
-            
-            // Initial check
-            setTimeout(() => {
-                handleScrollAnimation();
-            }, 100);
-            
-            // On scroll
-            window.addEventListener('scroll', () => {
-                handleScrollAnimation();
-            });
-            
-            // Ripple effect for button
-            const buttons = document.querySelectorAll('.btn');
-            
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const x = e.clientX - e.target.getBoundingClientRect().left;
-                    const y = e.clientY - e.target.getBoundingClientRect().top;
-                    
-                    const ripple = document.createElement('span');
-                    ripple.style.position = 'absolute';
-                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
-                    ripple.style.borderRadius = '50%';
-                    ripple.style.width = '100px';
-                    ripple.style.height = '100px';
-                    ripple.style.left = `${x - 50}px`;
-                    ripple.style.top = `${y - 50}px`;
-                    ripple.style.transform = 'scale(0)';
-                    ripple.style.animation = 'ripple 0.6s linear';
-                    ripple.style.opacity = '1';
-                    
-                    button.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
-            });
-            
-            // Add ripple animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes ripple {
-                    to {
-                        transform: scale(3);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Form handling with focus effects
-            const bibleQuestionForm = document.getElementById('bibleQuestionForm');
-            const bibleQuestion = document.getElementById('bibleQuestion');
-            const askButton = document.getElementById('askButton');
-            const btnText = askButton.querySelector('.btn-text');
-            const btnLoading = askButton.querySelector('.btn-loading');
-            const bibleAnswerContainer = document.getElementById('bibleAnswerContainer');
-            
-            // Form focus effects
-            const formGroup = document.querySelector('.form-group');
-            
-            bibleQuestion.addEventListener('focus', function() {
-                formGroup.classList.add('focused');
-            });
-            
-            bibleQuestion.addEventListener('blur', function() {
-                formGroup.classList.remove('focused');
-            });
-            
-            // The URL where your n8n webhook is hosted
-            const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai';
-            
-            bibleQuestionForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const question = bibleQuestion.value.trim();
-                
-                if (!question) {
-                    return;
-                }
-                
-                // Stop button pulse animation
-                askButton.classList.remove('pulse');
-                
-                // Show loading state with animation
-                btnText.style.display = 'none';
-                btnLoading.style.display = 'inline-block';
-                askButton.disabled = true;
-                
-                // Clear previous content with fade out
-                bibleAnswerContainer.style.opacity = '0';
-                bibleAnswerContainer.style.transform = 'translateY(10px)';
-                
-                setTimeout(async () => {
-                    try {
-                        // Replace with advanced loader
-                        bibleAnswerContainer.innerHTML = `
-                            <div class="initial-state" style="opacity: 0.9;">
-                                <div class="advanced-loader">
-                                    <div class="loader-bible">
-                                        <span>📖</span>
-                                    </div>
-                                </div>
-                                <p>Searching for biblical wisdom...</p>
-                            </div>
-                        `;
-                        
-                        // Fade in loading state
-                        setTimeout(() => {
-                            bibleAnswerContainer.style.opacity = '1';
-                            bibleAnswerContainer.style.transform = 'translateY(0)';
-                        }, 100);
-                        
-                        // Send the question to n8n webhook
-                        const response = await fetch(n8nWebhookUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                question: question
-                            })
-                        });
-                        
-                        if (!response.ok) {
-                            throw new Error('Failed to get answer');
-                        }
-                        
-                        const data = await response.json();
-                        
-                        // Fade out loading state
-                        bibleAnswerContainer.style.opacity = '0';
-                        bibleAnswerContainer.style.transform = 'translateY(10px)';
-                        
-                        setTimeout(() => {
-                            // Display the answer with animation
-                            bibleAnswerContainer.innerHTML = `
-                                <div class="bible-answer hover-card-content">
-                                    <h3>Answer:</h3>
-                                    <div class="answer-content">${data.answer}</div>
-                                </div>
-                            `;
-                            
-                            // Process and enhance verses
-                            enhanceVerses();
-                            
-                            // Fade in content
-                            setTimeout(() => {
-                                bibleAnswerContainer.style.opacity = '1';
-                                bibleAnswerContainer.style.transform = 'translateY(0)';
-                            }, 100);
-                            
-                            // Scroll to the answer container if it's out of view (mobile)
-                            if (window.innerWidth <= 992) {
-                                bibleAnswerContainer.scrollIntoView({ 
-                                    behavior: 'smooth',
-                                    block: 'nearest'
-                                });
-                            }
-                        }, 400);
-                        
-                    } catch (error) {
-                        console.error('Error:', error);
-                        
-                        // Fade out loading state
-                        bibleAnswerContainer.style.opacity = '0';
-                        bibleAnswerContainer.style.transform = 'translateY(10px)';
-                        
-                        setTimeout(() => {
-                            bibleAnswerContainer.innerHTML = `
-                                <div class="bible-answer error">
-                                    <h3>Sorry, there was an error</h3>
-                                    <div class="error-container">
-                                        <p>We couldn't process your question at this time. Please try again later.</p>
-                                    </div>
-                                </div>
-                            `;
-                            
-                            // Fade in error state
-                            setTimeout(() => {
-                                bibleAnswerContainer.style.opacity = '1';
-                                bibleAnswerContainer.style.transform = 'translateY(0)';
-                            }, 100);
-                        }, 400);
-                    } finally {
-                        // Restore button state with animation
-                        setTimeout(() => {
-                            btnText.style.display = 'inline-block';
-                            btnLoading.style.display = 'none';
-                            askButton.disabled = false;
-                            
-                            // Restart pulse animation after a delay
-                            setTimeout(() => {
-                                askButton.classList.add('pulse');
-                            }, 1000);
-                        }, 600);
-                    }
-                }, 400);
-            });
-            
-            // Function to enhance Bible verses with animations and styling
-            function enhanceVerses() {
-                const verses = document.querySelectorAll('.bible-verse');
-                
-                verses.forEach((verse, index) => {
-                    // Wrap verse text in p tag if not already
-                    const verseContent = verse.innerHTML;
-                    if (!verseContent.includes('<p>')) {
-                        const reference = verse.querySelector('.verse-reference');
-                        if (reference) {
-                            const textWithoutReference = verseContent.replace(reference.outerHTML, '');
-                            verse.innerHTML = `<p>${textWithoutReference}</p>${reference.outerHTML}`;
-                        } else {
-                            verse.innerHTML = `<p>${verseContent}</p>`;
-                        }
-                    }
-                    
-                    // Add animation with delay based on index
-                    verse.style.animation = `slideFadeIn 0.5s ease ${index * 0.2}s backwards`;
-                    
-                    // Add hover effect
-                    verse.addEventListener('mouseenter', function() {
-                        this.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.1)';
-                        this.style.background = 'linear-gradient(to right, rgba(78, 142, 213, 0.1), rgba(78, 142, 213, 0.07))';
-                    });
-                    
-                    verse.addEventListener('mouseleave', function() {
-                        this.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.05)';
-                        this.style.background = 'linear-gradient(to right, rgba(78, 142, 213, 0.08), rgba(78, 142, 213, 0.05))';
-                    });
-                });
-            }
-            
-            // Create floating particles
-            function createParticles() {
-                const particlesContainer = document.querySelector('.particles-container');
-                const particleCount = 30;
-                
-                for (let i = 0; i < particleCount; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    
-                    // Random size
-                    const size = Math.random() * 3 + 1;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    
-                    // Random position
-                    const posX = Math.random() * 100;
-                    const posY = Math.random() * 100 + 100; // Start below viewport
-                    particle.style.left = `${posX}%`;
-                    particle.style.top = `${posY}%`;
-                    
-                    // Random opacity and color
-                    particle.style.opacity = Math.random() * 0.5 + 0.1;
-                    
-                    // Choose between blue and purple
-                    const colors = [
-                        'rgba(78, 142, 213, 0.7)', // Blue
-                        'rgba(156, 78, 213, 0.7)', // Purple
-                        'rgba(213, 179, 78, 0.7)'  // Gold
-                    ];
-                    const colorIndex = Math.floor(Math.random() * colors.length);
-                    particle.style.backgroundColor = colors[colorIndex];
-                    
-                    // Animation duration
-                    const duration = Math.random() * 20 + 15;
-                    particle.style.animation = `particleFloat ${duration}s linear infinite`;
-                    
-                    // Random delay
-                    const delay = Math.random() * 15;
-                    particle.style.animationDelay = `-${delay}s`;
-                    
-                    particlesContainer.appendChild(particle);
-                }
-            }
-            
-            // 3D card hover effect
-            function initHoverEffect() {
-                const cards = document.querySelectorAll('.hover-card');
-                
-                cards.forEach(card => {
-                    card.addEventListener('mousemove', function(e) {
-                        const rect = this.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const angleY = (x - centerX) / 20;
-                        const angleX = (centerY - y) / 20;
-                        
-                        this.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
-                        
-                        const cardContent = this.querySelector('.hover-card-content');
-                        if (cardContent) {
-                            cardContent.style.transform = `translateZ(20px)`;
-                        }
-                    });
-                    
-                    card.addEventListener('mouseleave', function() {
-                        this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(-5px)';
-                        
-                        const cardContent = this.querySelector('.hover-card-content');
-                        if (cardContent) {
-                            cardContent.style.transform = 'translateZ(0)';
-                        }
-                    });
-                });
-            }
-            
-            // Create typing indicator function
-            const createTypingEffect = (element, text, speed = 20) => {
-                let i = 0;
-                element.textContent = '';
-                
-                return new Promise((resolve) => {
-                    const typing = setInterval(() => {
-                        if (i < text.length) {
-                            element.textContent += text.charAt(i);
-                            i++;
-                        } else {
-                            clearInterval(typing);
-                            resolve();
-                        }
-                    }, speed);
-                });
-            };
-            
-            // Optional: Preload animation for placeholder
-            setTimeout(() => {
-                const placeholder = bibleQuestion.getAttribute('placeholder');
-                bibleQuestion.setAttribute('placeholder', '');
-                
-                let placeholderElement = document.createElement('div');
-                placeholderElement.style.position = 'absolute';
-                placeholderElement.style.color = 'rgba(160, 160, 160, 0.6)';
-                placeholderElement.style.pointerEvents = 'none';
-                placeholderElement.style.left = '1.2rem';
-                placeholderElement.style.top = '1.2rem';
-                
-                // Insert after textarea
-                bibleQuestion.parentNode.insertBefore(placeholderElement, bibleQuestion.nextSibling);
-                
-                // Only show if textarea is empty and not focused
-                if (!bibleQuestion.value && document.activeElement !== bibleQuestion) {
-                    createTypingEffect(placeholderElement, placeholder, 50);
-                }
-                
-                // Handle focus events for placeholder
-                bibleQuestion.addEventListener('focus', () => {
-                    placeholderElement.style.display = 'none';
-                });
-                
-                bibleQuestion.addEventListener('blur', () => {
-                    if (!bibleQuestion.value) {
-                        placeholderElement.style.display = 'block';
-                    }
-                });
-            }, 2000);
-        });
-    </script>
-</body>
-</html>
