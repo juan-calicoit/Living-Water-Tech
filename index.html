@@ -1,6 +1,187 @@
+<<<<<<< HEAD
 evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
             opacity: 0.5;
             z-index: 0;
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Living Water Tech - Bible Q&A</title>
+    <style>
+        /* Reset and Base Styles */
+        :root {
+            --living-gray: #666666;
+            --water-blue: #003b7a;
+            --tech-black: #000000;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-gray);
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header for Bible Q&A */
+        .bible-header {
+            background: linear-gradient(135deg, var(--living-gray), var(--water-blue), #333);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bible-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            pointer-events: none;
+        }
+        
+        .logo-container {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .logo-svg {
+            max-width: 200px;
+            height: auto;
+        }
+        
+        /* Bible Q&A Section */
+        .bible-qa {
+            padding: 2rem 0 4rem;
+            background-color: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bible-qa::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 59, 122, 0.05) 0%, rgba(0, 59, 122, 0) 70%);
+            z-index: 0;
+        }
+        
+        .section-heading {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-heading h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--water-blue);
+        }
+        
+        .section-heading p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+        }
+        
+        .bible-qa-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .bible-qa-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #444;
+        }
+        
+        .form-control {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--water-blue);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 59, 122, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            background-color: var(--water-blue);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #002555;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bible-qa-results {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+>>>>>>> parent of bed8c6f (Update index.html)
         }
         
         /* Initial State */
@@ -10,8 +191,9 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: var(--text-secondary);
+            color: #999;
             text-align: center;
+<<<<<<< HEAD
             animation: fadeIn 0.8s ease;
             position: relative;
             z-index: 1;
@@ -45,18 +227,30 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
             left: 0;
             border-radius: 50%;
             animation: shadowPulse 5s ease-in-out infinite;
+=======
+        }
+        
+        .scripture-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+>>>>>>> parent of bed8c6f (Update index.html)
         }
         
         /* Bible Answer */
         .bible-answer {
             flex: 1;
+<<<<<<< HEAD
             animation: fadeIn 0.8s ease;
             position: relative;
             z-index: 1;
+=======
+>>>>>>> parent of bed8c6f (Update index.html)
         }
         
         .bible-answer h3 {
             color: var(--water-blue);
+<<<<<<< HEAD
             margin-bottom: 1.2rem;
             font-size: 1.5rem;
             font-weight: 600;
@@ -112,10 +306,19 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
         .keyword:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
+=======
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
         }
         
-        /* Bible verse styling */
+        .answer-content {
+            line-height: 1.7;
+>>>>>>> parent of bed8c6f (Update index.html)
+        }
+        
+        /* Bible verse styling - these will be generated by n8n */
         .bible-verse {
+<<<<<<< HEAD
             background: linear-gradient(to right, rgba(78, 142, 213, 0.08), rgba(78, 142, 213, 0.05));
             border-left: 4px solid var(--water-blue);
             padding: 1.5rem 1.8rem;
@@ -165,6 +368,14 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
                 opacity: 1;
                 transform: translateX(0);
             }
+=======
+            background-color: #f5f7fa;
+            border-left: 4px solid var(--water-blue);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            line-height: 1.6;
+>>>>>>> parent of bed8c6f (Update index.html)
         }
         
         .verse-wrapper {
@@ -214,8 +425,9 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
         .verse-reference {
             display: block;
             text-align: right;
-            margin-top: 0.9rem;
+            margin-top: 0.75rem;
             font-style: normal;
+<<<<<<< HEAD
             font-size: 0.95rem;
             color: var(--text-secondary);
             position: relative;
@@ -230,6 +442,10 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
             width: 40px;
             height: 1px;
             background-color: rgba(78, 142, 213, 0.3);
+=======
+            font-size: 0.9rem;
+            color: #555;
+>>>>>>> parent of bed8c6f (Update index.html)
         }
         
         .verse-reference strong {
@@ -446,10 +662,11 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
         /* Footer */
         .bible-footer {
             background-color: var(--tech-black);
-            color: var(--text-secondary);
-            padding: 1.7rem 0;
+            color: white;
+            padding: 1.5rem 0;
             text-align: center;
             font-size: 0.9rem;
+<<<<<<< HEAD
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
             animation: footerAppear 1s ease-out 1.2s backwards;
             position: relative;
@@ -632,6 +849,11 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
         }
         
         /* Responsive design with animations */
+=======
+        }
+        
+        /* Responsive design */
+>>>>>>> parent of bed8c6f (Update index.html)
         @media (max-width: 992px) {
             .bible-qa-container {
                 grid-template-columns: 1fr;
@@ -644,6 +866,7 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
             .section-heading h1 {
                 font-size: 2rem;
             }
+<<<<<<< HEAD
             
             .section-heading h1::before,
             .section-heading h1::after {
@@ -784,10 +1007,13 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
         .scroll-animate {
             opacity: 1;
             transform: translateY(0);
+=======
+>>>>>>> parent of bed8c6f (Update index.html)
         }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
     <!-- Page Transition Effect -->
     <div class="page-transition"></div>
     
@@ -803,6 +1029,11 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
             <div class="logo-container">
                 <div class="bible-icon">📖</div>
                 <div class="logo-text">LIVING WATER TECH</div>
+=======
+    <!-- Header -->
+    <header class="bible-header">
+        <div class="container">
+>>>>>>> parent of bed8c6f (Update index.html)
             </div>
         </div>
     </header>
@@ -915,6 +1146,7 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+<<<<<<< HEAD
             // Language Toggle
             initLanguageToggle();
             
@@ -925,6 +1157,8 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
             initA11y();
             
             // Form handling with focus effects
+=======
+>>>>>>> parent of bed8c6f (Update index.html)
             const bibleQuestionForm = document.getElementById('bibleQuestionForm');
             const bibleQuestion = document.getElementById('bibleQuestion');
             const askButton = document.getElementById('askButton');
@@ -951,7 +1185,7 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
             });
             
             // The URL where your n8n webhook is hosted
-            const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai';
+            const n8nWebhookUrl = 'https://callicoit.app.n8n.cloud/webhook/bible-ai'; // Replace with your actual n8n webhook URL
             
             bibleQuestionForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -962,14 +1196,19 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
                     return;
                 }
                 
+<<<<<<< HEAD
                 // Stop button pulse animation
                 askButton.classList.remove('pulse');
                 
                 // Show loading state with animation
+=======
+                // Show loading state
+>>>>>>> parent of bed8c6f (Update index.html)
                 btnText.style.display = 'none';
                 btnLoading.style.display = 'inline-block';
                 askButton.disabled = true;
                 
+<<<<<<< HEAD
                 // Clear previous content
                 bibleAnswerContainer.style.opacity = '0';
                 
@@ -1423,6 +1662,55 @@ evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%
                     };
                 }
             }
+=======
+                try {
+                    // Send the question to n8n webhook
+                    const response = await fetch(n8nWebhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            question: question
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to get answer');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Display the answer - since we're receiving HTML-formatted content from n8n
+                    bibleAnswerContainer.innerHTML = `
+                        <div class="bible-answer">
+                            <h3>Answer:</h3>
+                            <div class="answer-content">${data.answer}</div>
+                        </div>
+                    `;
+                    
+                    // Scroll to the answer container if it's out of view (mobile)
+                    if (window.innerWidth <= 992) {
+                        bibleAnswerContainer.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    bibleAnswerContainer.innerHTML = `
+                        <div class="bible-answer error">
+                            <h3>Sorry, there was an error</h3>
+                            <p>We couldn't process your question at this time. Please try again later.</p>
+                        </div>
+                    `;
+                } finally {
+                    // Restore button state
+                    btnText.style.display = 'inline-block';
+                    btnLoading.style.display = 'none';
+                    askButton.disabled = false;
+                }
+            });
+>>>>>>> parent of bed8c6f (Update index.html)
         });
     </script>
 </body>
